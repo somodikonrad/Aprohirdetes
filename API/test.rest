@@ -1,0 +1,32 @@
+### Teszt: Felhasználó létrehozása
+POST http://localhost:4000/users/register
+Content-Type: application/json
+
+{
+  "username": "Konrad",
+  "email": "somakoni1233@gmail.com",
+  "password": "20060120Koni"
+}
+
+### Felhasználó bejelentkezéses
+POST http://localhost:4000/users/login
+Content-Type: application/json
+
+{
+  "email": "somakoni1233@gmail.com",
+  "password": "20060120Koni"
+}
+
+### User adatok lekérése (Admin szükséges)
+GET http://localhost:4000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczOTI2ODkyNSwiZXhwIjoxNzM5MzU1MzI1fQ.Dp2Lje4hi78lsdIpFMAvLCQ-fBwdu5LgaRBYiRcN46E
+
+Content-Type: application/json
+{
+}
+
+
+
+
+
+
