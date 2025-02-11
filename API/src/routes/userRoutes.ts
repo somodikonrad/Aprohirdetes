@@ -145,7 +145,6 @@ router.post("/login", async (req: any, res: any) => {
   }
 });
 
-
 // 📌 Felhasználók kilistázása (csak adminoknak)
 router.get('/', tokencheck, isAdmin, async (_req: any, res: any) => {
   try {
@@ -160,7 +159,27 @@ router.get('/', tokencheck, isAdmin, async (_req: any, res: any) => {
   }
 });
 
-// Felhasználók id alapján
+// Felhasználók id alapján (Csak adminoknak)
+router.get("/:id", tokencheck, isAdmin, async (req: any, res: any) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await AppDataSource.getRepository(User).findOne({
+      where: { id: userId },
+      select: ["id", "name", "email", "role"], // Nem adjuk vissza a jelszót
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Felhasználó nem található!" });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("Hiba a felhasználó lekérése során:", error);
+    res.status(500).json({ message: "Hiba történt a felhasználó lekérésekor.", error });
+  }
+});
+
 
 // 
 

@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { User } from "./entity/User"; // Az adatbázis entity-k importálása
+import { Advertisements } from "./entity/Advertisements";
 
 export const AppDataSource = new DataSource({
   type: "mysql", // MySQL adatbázis típusa
@@ -10,7 +11,7 @@ export const AppDataSource = new DataSource({
   database: "13a_aprohirdetes", // Az adatbázis neve, amit használsz
   synchronize: true, // Az entitások automatikus szinkronizálása (development módban jó)
   logging: false, // Hibaüzenetek logolása
-  entities: [User], // Az entity-k listája, pl. User
+  entities: [User, Advertisements], // Az entity-k listája, pl. User
   migrations: [],
   subscribers: [],
 });

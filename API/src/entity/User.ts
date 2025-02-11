@@ -1,5 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, BeforeInsert } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, BeforeInsert, OneToMany } from "typeorm";
 import * as bcrypt from "bcrypt";
+import { Advertisements } from "./Advertisements";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -29,6 +30,10 @@ export class User extends BaseEntity {
     default: UserRole.USER, 
   })
   role: UserRole;
+
+  // 📌 Egy felhasználó több hirdetést is feladhat
+  @OneToMany(() => Advertisements, (advertisement) => advertisement.user)
+  advertisements: Advertisements;
 
   
 }
