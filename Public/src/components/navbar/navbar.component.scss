@@ -1,0 +1,44 @@
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #084c4c;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  }
+  
+  button {
+    color: white !important;
+    font-size: 1.1em; 
+    padding: 10px 20px;  
+  }
+  
+  /* Asztali nézet*/
+  @media (min-width: 601px) {
+    button {
+      font-size: 1.4em;
+      padding: 12px 25px;
+    }
+  }
+  
+  /* Mobil nézethez: */
+  @media (max-width: 600px) {
+    .buttonDiv {
+      display: none; 
+    }
+  
+    .mobile-menu {
+      display: flex;
+      flex-direction: column;
+      background-color: #252525ef;
+      padding: 10px;
+      gap: 10px;
+    }
+  
+   
+    .mobile-menu button {
+      color: white;
+    }
+  }
+  
