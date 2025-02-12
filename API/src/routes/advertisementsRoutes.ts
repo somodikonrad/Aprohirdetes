@@ -3,58 +3,85 @@ import { AppDataSource } from "../data-source";
 import { Advertisements } from "../entity/Advertisements";
 import { User } from "../entity/User";
 import jwt from "jsonwebtoken";
+import { Category } from "../entity/Category";
 
-const router = Router();
+const app = express();
 
+// Képfeltöltés
+const multer = require('multer');
+import path from 'path';
+import { tokencheck } from "../utils/tokenUtils";
 
-function tokencheck(req: any, res: any, next: NextFunction) {
-    const authHeader = req.header("Authorization");
-    if (!authHeader) {
-      return res.status(400).send("Jelentkezz be!");
-    }
-  
-    const token = authHeader.split(" ")[1]; // A Bearer token kinyerése
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Decoded token:", decoded);  // 📌 Itt ellenőrizheted, hogy benne van-e a `role`
-      req.user = decoded;
-      next();
-    } catch (error) {
-      return res.status(400).send("Hibás vagy lejárt token!");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    const timestamp = Date.now();
+    const originalname = file.originalname.replace(' ', '_');
+    const name = originalname.substring(0, originalname.lastIndexOf('.'));
+    const ext = originalname.substring(originalname.lastIndexOf('.'));
+    cb(null, name + '-' + timestamp + ext);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req: any, file: any, cb: any) => {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error("Csak képfájlok engedélyezettek!"), false);
     }
   }
+});
+
+
+const router = Router();
+app.use(express.json()); // Biztosítja a JSON-ként érkező kérés feldolgozását
 
 
 
 // 📌 Hirdetés létrehozása
-router.post("/", tokencheck, async (req: any, res: any) => {
-    try {
-      const { category, title, description, price, image } = req.body;
-      
-      if (!category || !title || !description || !price) {
-        return res.status(400).json({ message: "Minden mező kitöltése kötelező!" });
-      }
-  
-      const newAd = new Advertisements();
-      newAd.user = req.user.id; // A hirdetéshez kapcsolódó felhasználó azonosítója
-      newAd.date = new Date();
-      newAd.category = category;
-      newAd.title = title;
-      newAd.description = description;
-      newAd.price = price;
-      newAd.image = image;
-  
-      await AppDataSource.getRepository(Advertisements).save(newAd);
-  
-      res.status(201).json({ message: "Hirdetés sikeresen létrehozva!", advertisement: newAd });
-  
-    } catch (error) {
-      console.error("Hiba a hirdetés létrehozása során:", error);
-      res.status(500).json({ message: "Hiba történt a hirdetés létrehozásakor.", error });
-    }
-  });
+router.post("/", async (req: any, res: any) => {
+  console.log(req.body); 
   
 
+  const { categoryID, title, description, price, image } = req.body;
+
+
+  if (!categoryID || !title || !description || !price) {
+    return res.status(400).json({ message: "Minden mező kitöltése kötelező!" });
+  } 
+
+const user = await AppDataSource.getRepository(User).findOne({ where: { id: req.user?.userId } });
+    if (!user) {
+      //invalidFields.push('user');
+      return res.status(404).json({ message: "Felhasználó nem található!"});
+    }
+/*
+  const categoryEntity = await Category.findOne({ where: { id: categoryID } });
+  if (!categoryEntity) {
+    return res.status(400).json({ message: "Érvénytelen kategória!" });
+*/
+
+  const newAd = new Advertisements();
+  newAd.user = user;
+  newAd.date = new Date();
+  newAd.category = categoryID;
+  newAd.title = title;
+  newAd.description = description;
+  newAd.price = price;
+  newAd.imagefilename = image;
+
+  await AppDataSource.getRepository(Advertisements).save(newAd);
+
+  res.status(201).json({ message: "Hirdetés sikeresen létrehozva!", advertisement: newAd });
+});
 
 // 📌 Hirdetés módosítása (Csak a saját hirdetést módosíthatja)
 router.put("/:id", tokencheck, async (req: any, res: any) => {
@@ -77,7 +104,7 @@ router.put("/:id", tokencheck, async (req: any, res: any) => {
       ad.title = title || ad.title;
       ad.description = description || ad.description;
       ad.price = price || ad.price;
-      ad.image = image || ad.image;
+      ad.imagefilename = image || ad.imagefilename;
   
       await adRepository.save(ad);
   
@@ -88,8 +115,6 @@ router.put("/:id", tokencheck, async (req: any, res: any) => {
       res.status(500).json({ message: "Hiba történt a hirdetés módosításakor.", error });
     }
   });
-  
-
 
 // 📌 Hirdetés törlése (Csak a saját hirdetését törölheti)
 router.delete("/:id", tokencheck, async (req: any, res: any) => {
@@ -117,7 +142,6 @@ router.delete("/:id", tokencheck, async (req: any, res: any) => {
     }
   });
   
-
 // 📌 Hirdetések lekérése (Mindenki számára elérhető)
 router.get("/", async (_req: Request, res: Response) => {
   try {
@@ -128,5 +152,37 @@ router.get("/", async (_req: Request, res: Response) => {
     res.status(500).json({ message: "Hiba történt a hirdetések lekérésekor.", error });
   }
 });
+
+// 📌 Hirdetések lekérése adott kategóriában
+router.get("/category/:categoryName", async (req: any, res: any) => {
+  try {
+    const { categoryName } = req.params;
+
+    const ads = await AppDataSource.getRepository(Advertisements)
+      .createQueryBuilder("ad")
+      .where("ad.category = :categoryName", { categoryName })  // 📌 Javított where feltétel
+      .getMany();
+
+    if (ads.length === 0) {
+      return res.status(404).json({ message: `Nincsenek hirdetések ebben a kategóriában: ${categoryName}` });
+    }
+
+    res.status(200).json({ advertisements: ads });
+
+  } catch (error) {
+    console.error("❌ Hiba a kategória szerinti szűrés során:", error);
+    res.status(500).json({ message: "Hiba történt a hirdetések lekérésekor.", error });
+  }
+});
+
+// Képfeltöltés
+// 📌 Képfeltöltés (bejelentkezett felhasználóknak)
+router.post('/uploads', upload.single('file'), (req: any, res: any) => {
+  if (!req.file) {
+    return res.status(500).json({ message: 'Hiba történt a feltöltéskor!' });
+  }
+  res.status(200).json({ message: 'Sikeres képfeltöltés!', file: req.file });
+});
+
 
 export default router;
