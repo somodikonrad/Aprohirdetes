@@ -13,19 +13,28 @@
     font-size: 1.1em; 
     padding: 10px 20px;  
   }
-  
+  button:hover, #logout {
+    color: rgb(168, 168, 168) !important;
+  }
+#logout:hover{
+  color: rgb(110, 110, 110) !important;
+}
+
   /* Asztali nézet*/
   @media (min-width: 601px) {
     button {
       font-size: 1.4em;
       padding: 12px 25px;
     }
+    .mobile-menu{
+      visibility: hidden !important;
+    }
   }
   
   /* Mobil nézethez: */
   @media (max-width: 600px) {
     .buttonDiv {
-      display: none; 
+      visibility: hidden !important;
     }
   
     .mobile-menu {

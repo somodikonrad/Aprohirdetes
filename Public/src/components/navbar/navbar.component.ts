@@ -1,36 +1,48 @@
-import {Component, HostListener} from '@angular/core';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';  // <-- Importáld ezt a modult
+import { Component, HostListener, OnInit } from '@angular/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-/**
- * @title Nested menu
- */
+import { ApiService } from '../../services/api.service';
+
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [MatButtonModule, MatMenuModule, CommonModule, MatIconModule]  
+  standalone: true,
+  imports: [MatButtonModule, MatMenuModule, CommonModule, MatIconModule],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   isMobile: boolean = false;
   isMenuOpen: boolean = false;
+  categories: any[] = []; // Kategóriák tárolása
 
-  
+  constructor(private api: ApiService) {} // API injektálása
+
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {  // Típus hozzáadása
-    const width = (event.target as Window).innerWidth; 
+  onResize(event: Event) {
+    const width = (event.target as Window).innerWidth;
     this.isMobile = width <= 600;
   }
 
-  // Menü megjelenítése/elrejtése
+  ngOnInit() {
+    this.isMobile = window.innerWidth <= 600;
+    this.categorieLoad();
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  ngOnInit() {
-    // Kezdeti ellenőrzés a képernyő szélesség alapján
-    this.isMobile = window.innerWidth <= 600;
+  categorieLoad() {
+    this.api.getCategories().subscribe({
+      next: (res: any) => {
+        this.categories = res.categories; // Kategóriák elmentése
+      },
+      error: (err:any) => {
+        console.error('Hiba történt a kategóriák betöltésekor:', err);
+      },
+    });
   }
 }
