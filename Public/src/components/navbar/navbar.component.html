@@ -1,29 +1,27 @@
 <nav class="navbar">
-    <div class="buttonDiv">
-      <button mat-button [matMenuTriggerFor]="categories">Hirdetések</button>
-      <mat-menu #categories="matMenu">
-        <button mat-menu-item>Ingatlan</button>
-        <button mat-menu-item>Gépjárművek</button>
-        <button mat-menu-item>Háztartási gépek</button>
-        <button mat-menu-item>Játékok</button>
-        <button mat-menu-item>Ruházat</button>
-      </mat-menu>
-  
-      <button mat-button [matMenuTriggerFor]="profileMenu">Saját profil</button>
-      <mat-menu #profileMenu="matMenu">
-        <button mat-menu-item>Profilom</button>
-        <button mat-menu-item>Kijelentkezés</button>
-      </mat-menu>
-    </div>
-  
-    <!-- Hamburger menü ikon (csak mobilon) -->
-    <button *ngIf="isMobile" mat-icon-button (click)="toggleMenu()">
-      <mat-icon>menu</mat-icon> <!-- Itt a menu ikon -->
-    </button>
-  </nav>
-  
-  <div *ngIf="isMenuOpen" class="mobile-menu">
-    <button mat-button [matMenuTriggerFor]="categories">Hirdetések</button>
-    <button mat-button [matMenuTriggerFor]="profileMenu">Saját profil</button>
+  <div class="buttonDiv" *ngIf="!isMobile">
+    <!-- Hirdetések menü -->
+    <button mat-button [matMenuTriggerFor]="categoriesMenu">Hirdetések</button>
+    <mat-menu #categoriesMenu="matMenu">
+      <button mat-menu-item *ngFor="let category of categories">{{ category.name }}</button>
+    </mat-menu>
+    <button mat-button>Saját profil</button>
+    <button mat-button id="logout">Kijelentkezés</button>
   </div>
+
+  <!-- Hamburger menü ikon (csak mobilon) -->
+  <button *ngIf="isMobile" mat-icon-button (click)="toggleMenu()">
+    <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+  </button>
+</nav>
+
+<!-- Mobil menü -->
+<div *ngIf="isMobile && isMenuOpen" class="mobile-menu">
+  <button mat-button [matMenuTriggerFor]="categoriesMenu">Hirdetések</button>
   
+  <mat-menu #categoriesMenu="matMenu">
+    <button mat-menu-item *ngFor="let category of categories">{{ category.name }}</button>
+  </mat-menu>
+  <button mat-button>Saját profil</button>
+  <button mat-button>Kijelentkezés</button>
+</div>
