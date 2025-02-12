@@ -14,14 +14,7 @@ import { invalid } from "joi";
 
 const router = Router();
 
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+
 
 function generateToken(user: any) {
   return jwt.sign(
@@ -30,7 +23,6 @@ function generateToken(user: any) {
     { expiresIn: '1d' }
   );
 }
-
 
 function tokencheck(req: any, res: any, next: NextFunction) {
   const authHeader = req.header("Authorization");
@@ -54,6 +46,8 @@ function validatePassword(password: string): boolean {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
   return passwordRegex.test(password);
 }
+
+
 
 // 📌 Regisztráció
 router.post("/register", async (req: any, res: any) => {
@@ -180,8 +174,29 @@ router.get("/:id", tokencheck, isAdmin, async (req: any, res: any) => {
   }
 });
 
+// Felhasználó törlése id alapján (Csak adminoknak)
+// 📌 Felhasználó törlése ID alapján (csak adminoknak)
+router.delete("/:id", tokencheck, isAdmin, async (req: any, res: any) => {
+  try {
+    const userId = req.params.id;
 
-// 
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) {
+      return res.status(404).json({ message: "Felhasználó nem található!" });
+    }
+
+    await userRepository.remove(user);
+    res.status(200).json({ message: `✅ Felhasználó törölve: ${user.email}` });
+
+  } catch (error) {
+    console.error("❌ Hiba történt a felhasználó törlése során:", error);
+    res.status(500).json({ message: "Hiba történt a felhasználó törlésekor.", error });
+  }
+});
+
+
 
 
 export default router;

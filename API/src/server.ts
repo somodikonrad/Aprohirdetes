@@ -5,6 +5,7 @@ import advertisementsRoutes from "./routes/advertisementsRoutes";
 import { AppDataSource } from "./data-source";
 import { Category } from "./entity/Category";
 import { seedDatabase } from "./utils/DatabaseSeed";
+import categoryRoutes from "./routes/categoryRoutes";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/ads", advertisementsRoutes);
+app.use("/categories", categoryRoutes);
 
 // 🔹 Kategóriák seedelése
 
