@@ -18,7 +18,7 @@ const router = Router();
 
 function generateToken(user: any) {
   return jwt.sign(
-    { id: user.id, email: user.email, role: user.role },  // 📌 Role is belekerül a tokenbe
+    { id: user.id, email: user.email, role: user.role, address: user.address, name: user.name},  // 📌 Role is belekerül a tokenbe
     process.env.JWT_SECRET,
     { expiresIn: '1d' }
   );

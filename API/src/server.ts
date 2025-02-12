@@ -1,13 +1,18 @@
+require('dotenv').config();
 import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes";
 import advertisementsRoutes from "./routes/advertisementsRoutes";
 import { AppDataSource } from "./data-source";
-import { Category } from "./entity/Category";
 import { seedDatabase } from "./utils/DatabaseSeed";
 import categoryRoutes from "./routes/categoryRoutes";
 
+
 const app = express();
+
+// 🔹 Fájlok mentési és elérési konfigurációja
+
+
 
 app.use(cors());
 app.use(express.json());
@@ -16,7 +21,6 @@ app.use("/ads", advertisementsRoutes);
 app.use("/categories", categoryRoutes);
 
 // 🔹 Kategóriák seedelése
-
 // 🔹 Az AppDataSource-t itt inicializáljuk, ÉS csak egyszer!
 AppDataSource.initialize()
   .then(async () => {

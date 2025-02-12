@@ -1,11 +1,14 @@
+// -------------------------------Felhasználó tesztek-------------------------------
+
+
 ### Teszt: Felhasználó létrehozása
 POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-  "username": "Armin",
-  "email": "pecas@gmail.com",
-  "password": ""
+  "username": "Armin3",
+  "email": "Armin2@gmail.com",
+  "password": "Legjobbpecas1234"
 }
 
 ### Felhasználó bejelentkezéses
@@ -33,18 +36,47 @@ Content-Type: application/json
 {
 }
 
-### Kategória lekérés
-GET http://localhost:4000/categories
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczOTI2ODkyNSwiZXhwIjoxNzM5MzU1MzI1fQ.Dp2Lje4hi78lsdIpFMAvLCQ-fBwdu5LgaRBYiRcN46E
+### Felhasználó törlése id alapján (csak adminoknak)
+
+DELETE http://localhost:4000/users/d852b419-a012-40bd-8327-828f7b2dce8c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczOTM0NzgxNiwiZXhwIjoxNzM5NDM0MjE2fQ.451uM2lvK-dnbCWTNPSwA525-Gz9gMeLxPxdZLSleCI
 
 Content-Type: application/json
 {
 }
 
 
+// -------------------------------Kategória tesztek-------------------------------
+
+### Kategória szerinti szűrés
+GET http://localhost:4000/ads/category/Ingatlan
 
 
+### Kategória lekérés
+GET http://localhost:4000/categories
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5MzU4MTI1LCJleHAiOjE3Mzk0NDQ1MjV9.bocAnfNmLM4YhLRydk8qxHcoPsORKnj9BqaihilmWdM
+
+Content-Type: application/json
+{
+}
 
 
+// -------------------------------Hirdetés tesztek-------------------------------
+
+
+### Hirdetés létrehozás
+POST http://localhost:4000/ads
+Content-Type: application/json
+
+{
+  "categoryID": "6", 
+  "title": "Eladó iPhone 13", 
+  "description": "Újszerű állapot, minden tartozékkal.", 
+  "price": 250000,
+  "image": "image-1616161616161.jpg"
+}
+
+
+### Képfeltöltés
 
 

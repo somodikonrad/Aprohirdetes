@@ -6,7 +6,7 @@ import { tokencheck } from "../utils/tokenUtils";
 
 const router = Router();
 
-
+// Kategóriák lekérése
 router.get("/", tokencheck, async (_req: any, res: any) => {
     try {
       const categories = await AppDataSource.getRepository(Category).find();
