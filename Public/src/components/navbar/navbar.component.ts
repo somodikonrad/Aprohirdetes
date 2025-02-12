@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     const width = (event.target as Window).innerWidth;
-    this.isMobile = width <= 600;
+    this.isMobile = width <= 825;
   }
 
   ngOnInit() {
