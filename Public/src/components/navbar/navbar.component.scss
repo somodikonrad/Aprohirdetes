@@ -2,7 +2,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background-color: #084c4c;
+    background-color: #181818;
     padding: 20px;
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
@@ -14,14 +14,14 @@
     padding: 10px 20px;  
   }
   button:hover, #logout {
-    color: rgb(168, 168, 168) !important;
+    color: rgb(226, 224, 224) !important;
   }
 #logout:hover{
-  color: rgb(110, 110, 110) !important;
+  color: rgb(150, 150, 150) !important;
 }
 
   /* Asztali nézet*/
-  @media (min-width: 601px) {
+  @media (min-width: 826px) {
     button {
       font-size: 1.4em;
       padding: 12px 25px;
@@ -32,7 +32,7 @@
   }
   
   /* Mobil nézethez: */
-  @media (max-width: 600px) {
+  @media (max-width: 825px) {
     .buttonDiv {
       visibility: hidden !important;
     }

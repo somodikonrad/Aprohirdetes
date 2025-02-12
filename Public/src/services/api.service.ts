@@ -37,7 +37,7 @@ export class ApiService {
   
 
   getCategories(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.server}/categories`, this.tokenHeader());
+    return this.http.get<any[]>(`${this.server}/categories`);
   }
   
 

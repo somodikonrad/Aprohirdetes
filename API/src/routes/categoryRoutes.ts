@@ -7,7 +7,7 @@ import { tokencheck } from "../utils/tokenUtils";
 const router = Router();
 
 
-router.get("/", tokencheck, async (_req: any, res: any) => {
+router.get("/", async (_req: any, res: any) => {
     try {
       const categories = await AppDataSource.getRepository(Category).find();
       res.status(200).json({ categories: categories });

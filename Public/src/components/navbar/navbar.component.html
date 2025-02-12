@@ -1,6 +1,8 @@
 <nav class="navbar">
   <div class="buttonDiv" *ngIf="!isMobile">
     <!-- Hirdetések menü -->
+    <button mat-button>Regisztráció</button>
+    <button mat-button>Login</button>
     <button mat-button [matMenuTriggerFor]="categoriesMenu">Hirdetések</button>
     <mat-menu #categoriesMenu="matMenu">
       <button mat-menu-item *ngFor="let category of categories">{{ category.name }}</button>
@@ -17,6 +19,8 @@
 
 <!-- Mobil menü -->
 <div *ngIf="isMobile && isMenuOpen" class="mobile-menu">
+  <button mat-button>Regisztráció</button>
+    <button mat-button>Login</button>
   <button mat-button [matMenuTriggerFor]="categoriesMenu">Hirdetések</button>
   
   <mat-menu #categoriesMenu="matMenu">
