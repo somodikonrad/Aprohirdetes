@@ -1,11 +1,14 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "./User";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Advertisements } from "./Advertisements";
 
 @Entity()
-export class Advertisements extends BaseEntity {
+export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
+
+  @OneToMany(() => Advertisements, (advertisement) => advertisement.category)
+  advertisements: Advertisements[];
 }

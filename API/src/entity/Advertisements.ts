@@ -1,20 +1,22 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 import { User } from "./User";
+import { Category } from "./Category";
 
 @Entity()
 export class Advertisements extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid") // UUID alapú azonosító
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne(() => User, (user) => user.advertisements, { onDelete: "CASCADE" }) 
-  @JoinColumn({ name: "userID" }) // Külső kulcs neve az adatbázisban
-  user: User; // Ez a kapcsolatot jelöli
+  @ManyToOne(() => User, (user) => user.advertisements, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "userID" })
+  user: User;
 
   @Column()
   date: Date;
 
-  @Column()
-  category: string;
+  @ManyToOne(() => Category, (category) => category.advertisements, { nullable: false })
+  @JoinColumn({ name: "categoryID" })
+  category: Category; // Kategória kapcsolat
 
   @Column()
   title: string;
@@ -25,6 +27,6 @@ export class Advertisements extends BaseEntity {
   @Column()
   price: number;
 
-  @Column("blob")
+  @Column("blob", { nullable: true }) // Kép opcionálisan lehet null
   image: Buffer;
 }
