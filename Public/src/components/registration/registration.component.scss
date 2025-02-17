@@ -6,4 +6,51 @@
     background-color: rgb(27, 27, 27);
   }
 
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 400px;
+    margin: auto;
+    margin-top: 5%;
+    padding: 2rem;
+    background: rgb(27, 27, 27);
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #d1d1d1;
+    }
+  
+    .form-field {
+      width: 100%;
+  
+      mat-form-field {
+        width: 100%;
+      }
+    }
+  
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out;
+  
+      &:hover {
+        background-color: #04ddd8;
+        color: white;
+      }
+  
+      &:disabled {
+        background-color: #ccc;
+        color: #2e2d2d;
+        cursor: not-allowed;
+      }
+    }
+  }
   

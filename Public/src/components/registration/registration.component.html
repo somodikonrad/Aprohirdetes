@@ -1,0 +1,51 @@
+<form class="form flex flex-center" [formGroup]="registrationForm">
+    <h3>Regisztráció</h3>
+
+    <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Név</mat-label>
+        <input type="text" matInput formControlName="name">
+        @if (registrationForm.get('name')?.hasError('required')) {
+            <mat-error>A név megadása kötelező</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email">
+        @if (registrationForm.get('email')?.hasError('required')) {
+            <mat-error>Email megadása kötelező</mat-error>
+        }
+        @if (registrationForm.get('email')?.hasError('email')) {
+            <mat-error>Érvénytelen email</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Cím</mat-label>
+        <input type="text" matInput formControlName="address">
+        @if (registrationForm.get('address')?.hasError('required')) {
+            <mat-error>A cím megadása kötelező</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Jelszó</mat-label>
+        <input type="password" matInput formControlName="password">
+        @if (registrationForm.get('password')?.hasError('required')) {
+            <mat-error>A jelszó megadása kötelező</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Jelszó megerősítése</mat-label>
+        <input type="password" matInput formControlName="confirmPassword">
+        @if (registrationForm.get('confirmPassword')?.hasError('required')) {
+            <mat-error>A jelszó megerősítése kötelező</mat-error>
+        }
+        @if (registrationForm.hasError('passwordMismatch')) {
+            <mat-error>A jelszavak nem egyeznek</mat-error>
+        }
+    </mat-form-field>
+
+    <button mat-stroked-button (click)="submit()" [disabled]="registrationForm.invalid">Regisztráció</button>
+</form>
