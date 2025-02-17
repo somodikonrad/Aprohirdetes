@@ -6,9 +6,10 @@ POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-  "username": "Armin3",
-  "email": "Armin2@gmail.com",
-  "password": "Legjobbpecas1234"
+  "username": "KonradTest",
+  "email": "KonradTest@gmail.com",
+  "password": "LegjobbTestes123",
+  "address": "Hercegszántó, Tót u. 14."
 }
 
 ### Felhasználó bejelentkezéses
@@ -70,13 +71,23 @@ Content-Type: application/json
 
 {
   "categoryID": "6", 
-  "title": "Eladó iPhone 13", 
-  "description": "Újszerű állapot, minden tartozékkal.", 
-  "price": 250000,
-  "image": "image-1616161616161.jpg"
+  "title": "Eladó Lenovo laptop", 
+  "description": "Kiváló állapot, minden tartozékkal, 100%-os akkumulátor", 
+  "price": 190000,
+  "image": "image-lenovo.jpg"
 }
 
 
-### Képfeltöltés
+### Hirdetés módosítás
+
+PATCH http://localhost:4000/ads
+Content-Type: application/json
+
+{
+  
+}
+
+
+
 
 
