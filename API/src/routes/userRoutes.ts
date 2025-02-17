@@ -145,7 +145,7 @@ router.post("/login", async (req: any, res: any) => {
 router.get('/', tokencheck, isAdmin, async (_req: any, res: any) => {
   try {
     const users = await AppDataSource.getRepository(User).find({
-      select: ["id", "name", "email",], // Válaszd ki, mely mezőket szeretnél visszakapni
+      select: ["id", "name", "email"], // Válaszd ki, mely mezőket szeretnél visszakapni
     });
  
     res.status(200).json({ users });

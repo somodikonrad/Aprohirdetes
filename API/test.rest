@@ -6,10 +6,10 @@ POST http://localhost:4000/users/register
 Content-Type: application/json
 
 {
-  "username": "KonradTest",
-  "email": "KonradTest@gmail.com",
+  "username": "KonradTest12",
+  "email": "KonradTest12@gmail.com",
   "password": "LegjobbTestes123",
-  "address": "Hercegszántó, Tót u. 14."
+  "address": "Hercegszántó, Tót u. 20."
 }
 
 ### Felhasználó bejelentkezéses
@@ -17,13 +17,15 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-  "email": "somakoni1233@gmail.com",
-  "password": "20060120Koni"
+  "email": "KonradTest@gmail.com",
+  "password": "LegjobbTestes123"
 }
+
+
 
 ### User adatok lekérése (Admin szükséges)
 GET http://localhost:4000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczOTI2ODkyNSwiZXhwIjoxNzM5MzU1MzI1fQ.Dp2Lje4hi78lsdIpFMAvLCQ-fBwdu5LgaRBYiRcN46E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkMjUwMzI2LWQ5MzctNDczNy04YTM1LWMxZTIyZmE4ODRiNCIsImVtYWlsIjoiS29ucmFkVGVzdDEyQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiYWRkcmVzcyI6IkhlcmNlZ3N6w6FudMOzLCBUw7N0IHUuIDIwLiIsIm5hbWUiOiJLb25yYWRUZXN0MTIiLCJpYXQiOjE3Mzk3ODEwNzEsImV4cCI6MTczOTg2NzQ3MX0.bqAy4zMvUYqWWMXVV8a-D6XguqPbm0LykOf1UxlGAis
 
 Content-Type: application/json
 {
@@ -42,15 +44,11 @@ Content-Type: application/json
 DELETE http://localhost:4000/users/d852b419-a012-40bd-8327-828f7b2dce8c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczOTM0NzgxNiwiZXhwIjoxNzM5NDM0MjE2fQ.451uM2lvK-dnbCWTNPSwA525-Gz9gMeLxPxdZLSleCI
 
-Content-Type: application/json
-{
-}
-
 
 // -------------------------------Kategória tesztek-------------------------------
 
 ### Kategória szerinti szűrés
-GET http://localhost:4000/ads/category/Ingatlan
+GET http://localhost:4000/ads/category/6
 
 
 ### Kategória lekérés
@@ -70,24 +68,27 @@ POST http://localhost:4000/ads
 Content-Type: application/json
 
 {
-  "categoryID": "6", 
-  "title": "Eladó Lenovo laptop", 
-  "description": "Kiváló állapot, minden tartozékkal, 100%-os akkumulátor", 
-  "price": 190000,
-  "image": "image-lenovo.jpg"
+  "categoryID": "8", 
+  "title": "Nike sportcipő", 
+  "description": "Kiváló állapot, kis kopás, semmi extra", 
+  "price": 50000,
+  "image": "nikecipo.jpg"
 }
 
-
-### Hirdetés módosítás
-
-PATCH http://localhost:4000/ads
+### Hirdetés módosítás  
+PATCH http://localhost:4000/ads/5508b232-661d-4f80-9a9f-9650a4d76434
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5NzgyMTk1LCJleHAiOjE3Mzk4Njg1OTV9.tu1px7FSrDWb_5SJg4qOLATCU5zo60wpLPnRZy89X_s
 Content-Type: application/json
 
 {
-  
+  "categoryID": "8",  
+  "title": "Legkomolyabb hirdetés igenigen", 
+  "description": "Ez egy módosított hirdetés leírása, amit nagyon nyomattam", 
+  "price": 2000000,
+  "image": "new-image.jpg"
 }
 
+### Hirdetés törlése
 
-
-
-
+DELETE http://localhost:4000/ads/8b0877e8-38e4-4587-a699-9b2bf59bd2dc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5NzgzMzgyLCJleHAiOjE3Mzk4Njk3ODJ9.TJ9BQ38634Bo48u9gQcphZPE0FEHxQ-9MKpJNGFUr_w
