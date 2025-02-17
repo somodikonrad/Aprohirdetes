@@ -1,6 +1,4 @@
 // -------------------------------Felhasználó tesztek-------------------------------
-
-
 ### Teszt: Felhasználó létrehozása
 POST http://localhost:4000/users/register
 Content-Type: application/json
@@ -17,48 +15,39 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-  "email": "KonradTest@gmail.com",
+  "email": "KonradTest12@gmail.com",
   "password": "LegjobbTestes123"
 }
 
-
-
 ### User adatok lekérése (Admin szükséges)
 GET http://localhost:4000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkMjUwMzI2LWQ5MzctNDczNy04YTM1LWMxZTIyZmE4ODRiNCIsImVtYWlsIjoiS29ucmFkVGVzdDEyQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiYWRkcmVzcyI6IkhlcmNlZ3N6w6FudMOzLCBUw7N0IHUuIDIwLiIsIm5hbWUiOiJLb25yYWRUZXN0MTIiLCJpYXQiOjE3Mzk3ODEwNzEsImV4cCI6MTczOTg2NzQ3MX0.bqAy4zMvUYqWWMXVV8a-D6XguqPbm0LykOf1UxlGAis
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5Nzg2NjEzLCJleHAiOjE3Mzk4NzMwMTN9.O45KVE5V3zfXiYb_FhJgL95CNzpj9yLAox4joFI3OzQ
 
 Content-Type: application/json
 {
 }
 
 ### Felhasználók id alapján (Admin szükséges)
-GET http://localhost:4000/users/3303eba2-5a8e-402d-8239-5da8b7ac71f6
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczOTI2ODkyNSwiZXhwIjoxNzM5MzU1MzI1fQ.Dp2Lje4hi78lsdIpFMAvLCQ-fBwdu5LgaRBYiRcN46E
+GET http://localhost:4000/users/9724ca4c-a576-4958-a829-aa4b12d1ce4b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5Nzg2NjgyLCJleHAiOjE3Mzk4NzMwODJ9.eJUDCovzeIufbAFEIKl2KFtAuNWwwLCkBz-HDoIuffc
 
 Content-Type: application/json
 {
 }
 
 ### Felhasználó törlése id alapján (csak adminoknak)
-
-DELETE http://localhost:4000/users/d852b419-a012-40bd-8327-828f7b2dce8c
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczOTM0NzgxNiwiZXhwIjoxNzM5NDM0MjE2fQ.451uM2lvK-dnbCWTNPSwA525-Gz9gMeLxPxdZLSleCI
+DELETE http://localhost:4000/users/9724ca4c-a576-4958-a829-aa4b12d1ce4b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5Nzg2NjgyLCJleHAiOjE3Mzk4NzMwODJ9.eJUDCovzeIufbAFEIKl2KFtAuNWwwLCkBz-HDoIuffc
 
 
 // -------------------------------Kategória tesztek-------------------------------
 
-### Kategória szerinti szűrés
-GET http://localhost:4000/ads/category/6
+### Kategória szerinti szűrés (Kategória + kategóriához tartozó hirdetések)
+GET http://localhost:4000/ads/category/Gépjármű
 
-
-### Kategória lekérés
+### Összes kategória lekérés
 GET http://localhost:4000/categories
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5MzU4MTI1LCJleHAiOjE3Mzk0NDQ1MjV9.bocAnfNmLM4YhLRydk8qxHcoPsORKnj9BqaihilmWdM
-
-Content-Type: application/json
-{
-}
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3MjRjYTRjLWE1NzYtNDk1OC1hODI5LWFhNGIxMmQxY2U0YiIsImVtYWlsIjoiS29ucmFkVGVzdEBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImFkZHJlc3MiOiJIZXJjZWdzesOhbnTDsywgVMOzdCB1LiAxNC4iLCJuYW1lIjoiS29ucmFkVGVzdCIsImlhdCI6MTczOTc4NDY2MSwiZXhwIjoxNzM5ODcxMDYxfQ.MFBLcM3hA-G8_Cv2ibAUlBY5EIZVeyw7JUbtUU4UeYA
 
 // -------------------------------Hirdetés tesztek-------------------------------
 
@@ -68,11 +57,11 @@ POST http://localhost:4000/ads
 Content-Type: application/json
 
 {
-  "categoryID": "8", 
-  "title": "Nike sportcipő", 
-  "description": "Kiváló állapot, kis kopás, semmi extra", 
+  "categoryID": "1", 
+  "title": "Pumba", 
+  "description": "Áron2Pumba is hadd örüljön", 
   "price": 50000,
-  "image": "nikecipo.jpg"
+  "image": "pumbaaron2.jpg"
 }
 
 ### Hirdetés módosítás  
@@ -90,5 +79,14 @@ Content-Type: application/json
 
 ### Hirdetés törlése
 
-DELETE http://localhost:4000/ads/8b0877e8-38e4-4587-a699-9b2bf59bd2dc
+DELETE http://localhost:4000/ads/456eb044-8d77-4d20-b373-58c605515fff
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5NzgzMzgyLCJleHAiOjE3Mzk4Njk3ODJ9.TJ9BQ38634Bo48u9gQcphZPE0FEHxQ-9MKpJNGFUr_w
+
+
+### Összes hirdetés lekérése
+GET http://localhost:4000/ads
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMzMDNlYmEyLTVhOGUtNDAyZC04MjM5LTVkYThiN2FjNzFmNiIsImVtYWlsIjoic29tYWtvbmkxMjMzQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIiLCJuYW1lIjoiS29ucmFkIiwiaWF0IjoxNzM5MzU4MTI1LCJleHAiOjE3Mzk0NDQ1MjV9.bocAnfNmLM4YhLRydk8qxHcoPsORKnj9BqaihilmWdM
+
+Content-Type: application/json
+{
+}

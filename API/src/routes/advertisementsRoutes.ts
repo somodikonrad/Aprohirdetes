@@ -10,7 +10,8 @@ import { Category } from "../entity/Category";
 const app = express();
 
 
-// MULTER CONFIG
+// ----------------------------Multer(Képfeltöltés)----------------------------
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
@@ -25,6 +26,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage })
+
+
 
 const router = Router();
 app.use(express.json()); // Biztosítja a JSON-ként érkező kérés feldolgozását
@@ -56,8 +59,8 @@ export const deleteExpiredAds = async () => {
   }
 };
 
-
-// 📌 Hirdetés létrehozása
+// ----------------------------Hirdetés műveletek----------------------------
+// Hirdetés létrehozása
 router.post("/", async (req: any, res: any) => {
   console.log(req.body);  
 
@@ -99,7 +102,7 @@ router.post("/", async (req: any, res: any) => {
   res.status(201).json({ message: "Hirdetés sikeresen létrehozva!", advertisement: newAd });
 });
 
-// 📌 Hirdetés módosítása (Csak a saját hirdetést módosíthatja)
+// Hirdetés módosítása (Csak a saját hirdetést módosíthatja)
 router.patch("/:id", tokencheck, async (req: any, res: any) => {
   console.log("Request Params:", req.params);  // Az id ellenőrzése
   console.log("Request Body:", req.body);      // A módosított mezők
@@ -155,12 +158,7 @@ router.patch("/:id", tokencheck, async (req: any, res: any) => {
   }
 });
 
-
-
-
-
-
-// 📌 Hirdetés törlése (Csak a saját hirdetését törölheti)
+// Hirdetés törlése (Csak a saját hirdetését törölheti)
 router.delete("/:id", tokencheck, async (req: any, res: any) => {
   try {
     const { id } = req.params;
@@ -186,7 +184,7 @@ router.delete("/:id", tokencheck, async (req: any, res: any) => {
   }
 });
 
-// 📌 Hirdetések lekérése (Mindenki számára elérhető)
+// Hirdetések lekérése (Mindenki számára elérhető)
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const ads = await AppDataSource.getRepository(Advertisements).find();
@@ -197,21 +195,38 @@ router.get("/", async (_req: Request, res: Response) => {
   }
 });
 
-// 📌 Hirdetések lekérése adott kategóriában
+// Hirdetések lekérése adott kategóriában
 router.get("/category/:categoryName", async (req: any, res: any) => {
   try {
     const { categoryName } = req.params;
 
+    // Először keresd meg a kategóriát a neve alapján
+    const category = await AppDataSource.getRepository(Category)
+      .createQueryBuilder("category")
+      .where("category.name = :categoryName", { categoryName })
+      .getOne();
+
+    // Ha nem található a kategória
+    if (!category) {
+      return res.status(404).json({ message: `Nincs ilyen kategória: ${categoryName}` });
+    }
+
+    // Keressük meg az összes hirdetést a kategóriához
     const ads = await AppDataSource.getRepository(Advertisements)
       .createQueryBuilder("ad")
-      .where("ad.category = :categoryName", { categoryName })
+      .where("ad.categoryId = :categoryId", { categoryId: category.id })
       .getMany();
 
+    // Ha nincsenek hirdetések ebben a kategóriában
     if (ads.length === 0) {
       return res.status(404).json({ message: `Nincsenek hirdetések ebben a kategóriában: ${categoryName}` });
     }
 
-    res.status(200).json({ advertisements: ads });
+    // Kategória név és a hozzá tartozó hirdetések visszaküldése
+    res.status(200).json({
+      category: category.name,
+      advertisements: ads
+    });
 
   } catch (error) {
     console.error("❌ Hiba a kategória szerinti szűrés során:", error);

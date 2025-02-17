@@ -1,20 +1,16 @@
 import express, { Request, Response, NextFunction, Router } from "express";
 import { AppDataSource } from "../data-source";
 import { User, UserRole } from "../entity/User";
-import mysql from "mysql2/promise";
-import { generatePassword } from "../utils/password";
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";  // bcrypt importálása
 import { isAdmin } from "../utils/isAdmin";
 const jwt = require('jsonwebtoken');
 dotenv.config();
-import ejs from "ejs";
-import { invalid } from "joi";
 
 const router = Router();
 
 
+// ---------------------------AuthUtils-----------------------------
 
 function generateToken(user: any) {
   return jwt.sign(
@@ -47,9 +43,9 @@ function validatePassword(password: string): boolean {
   return passwordRegex.test(password);
 }
 
+// ----------------------------User műveletek----------------------------
 
-
-// 📌 Regisztráció
+// Regisztráció
 router.post("/register", async (req: any, res: any) => {
   let invalidFields = [];  // A hibás mezők tárolása
   try {
@@ -97,7 +93,7 @@ router.post("/register", async (req: any, res: any) => {
   }
 });
 
-// 📌 Bejelentkezés
+// Bejelentkezés
 router.post("/login", async (req: any, res: any) => {
   let invalidFields = [];  // A hibás mezők tárolása
   try {
@@ -141,11 +137,11 @@ router.post("/login", async (req: any, res: any) => {
   }
 });
 
-// 📌 Felhasználók kilistázása (csak adminoknak)
+// Felhasználók kilistázása (csak adminoknak)
 router.get('/', tokencheck, isAdmin, async (_req: any, res: any) => {
   try {
     const users = await AppDataSource.getRepository(User).find({
-      select: ["id", "name", "email"], // Válaszd ki, mely mezőket szeretnél visszakapni
+      select: ["id", "name", "email", "role"], // Válaszd ki, mely mezőket szeretnél visszakapni
     });
  
     res.status(200).json({ users });
@@ -176,8 +172,7 @@ router.get("/:id", tokencheck, isAdmin, async (req: any, res: any) => {
   }
 });
 
-// Felhasználó törlése id alapján (Csak adminoknak)
-// 📌 Felhasználó törlése ID alapján (csak adminoknak)
+// Felhasználó törlése ID alapján (csak adminoknak)
 router.delete("/:id", tokencheck, isAdmin, async (req: any, res: any) => {
   try {
     const userId = req.params.id;
@@ -197,7 +192,6 @@ router.delete("/:id", tokencheck, isAdmin, async (req: any, res: any) => {
     res.status(500).json({ message: "Hiba történt a felhasználó törlésekor.", error });
   }
 });
-
 
 
 
