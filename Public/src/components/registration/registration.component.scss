@@ -54,3 +54,22 @@
     }
   }
   
+  ::ng-deep .mat-snack-bar-container {
+    font-size: 18px; /* Nagyobb betűméret */
+    font-weight: bold; /* Félkövér szöveg */
+    border-radius: 8px; /* Lekerekített sarkok */
+    padding: 16px 24px; /* Belső margó növelése */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Árnyék */
+  }
+  
+  ::ng-deep .snackbar-success {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  ::ng-deep .snackbar-error {
+    background-color: #f44336 !important;
+    color: white;
+  }
+  
+  
