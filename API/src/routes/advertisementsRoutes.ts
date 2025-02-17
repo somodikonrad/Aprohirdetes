@@ -185,7 +185,7 @@ router.delete("/:id", tokencheck, async (req: any, res: any) => {
 });
 
 // Hirdetések lekérése (Mindenki számára elérhető)
-router.get("/", async (_req: Request, res: Response) => {
+router.get("/", tokencheck, async (_req: Request, res: Response) => {
   try {
     const ads = await AppDataSource.getRepository(Advertisements).find();
     res.status(200).json({ advertisements: ads });
