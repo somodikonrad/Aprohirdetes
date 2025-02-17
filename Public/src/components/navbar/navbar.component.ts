@@ -1,11 +1,12 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
+import { Router, RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../services/api.service';
-import { Router, RouterModule } from '@angular/router';
-
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -17,9 +18,12 @@ import { Router, RouterModule } from '@angular/router';
 export class NavbarComponent implements OnInit {
   isMobile: boolean = false;
   isMenuOpen: boolean = false;
-  categories: any[] = []; // Kategóriák tárolása
+  categories: any[] = [];
+  isLoggedIn$: Observable<boolean>;
 
-  constructor(private api: ApiService, private router: Router) {} // Inject Router) {} // API injektálása
+  constructor(private api: ApiService, private auth: AuthService, private router: Router) {
+    this.isLoggedIn$ = this.auth.isLoggedIn$; // Subscribe to the observable
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
@@ -39,11 +43,12 @@ export class NavbarComponent implements OnInit {
   categorieLoad() {
     this.api.getCategories().subscribe({
       next: (res: any) => {
-        this.categories = res.categories; // Kategóriák elmentése
+        this.categories = res.categories;
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error('Hiba történt a kategóriák betöltésekor:', err);
       },
     });
   }
+
 }
