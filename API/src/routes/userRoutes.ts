@@ -53,12 +53,13 @@ function validatePassword(password: string): boolean {
 router.post("/register", async (req: any, res: any) => {
   let invalidFields = [];  // A hibás mezők tárolása
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, address } = req.body;
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !address) {
       if (!username) invalidFields.push('username');
       if (!email) invalidFields.push('email');
       if (!password) invalidFields.push('password');
+      if (!address) invalidFields.push('address');
       
       return res.status(400).json({ message: "Hiányzó adatok! (username, email, password szükséges)", invalid: invalidFields });
     }
@@ -80,6 +81,7 @@ router.post("/register", async (req: any, res: any) => {
     user.name = username;
     user.email = email;
     user.password = hashedPassword;
+    user.address = address;
 
     await AppDataSource.getRepository(User).save(user);
 
