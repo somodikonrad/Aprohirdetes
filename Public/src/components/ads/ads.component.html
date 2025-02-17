@@ -3,16 +3,17 @@
       <mat-card-header>
         <div class="header-content">
           <div class="user-info">
-            <mat-icon class="profile-icon" *ngIf="!ad.user.profilePicture">account_circle</mat-icon>
-
-            <img *ngIf="ad.user.profilePicture" [src]="ad.user.profilePicture" alt="Profile Picture" class="profile-image" />
-            <span class="user-name">{{ ad.user.name }}</span>
+            <!-- Profil ikon vagy kép -->
+            <mat-icon class="profile-icon">account_circle</mat-icon>
+            <span class="user-name">{{ ad.user.name }}</span> <!-- Felhasználó neve -->
+            <span class="user-id">ID: {{ ad.user.id }}</span> <!-- Felhasználó ID-ja -->
           </div>
-          <mat-card-title>{{ ad.title }}</mat-card-title>
-          <mat-card-subtitle>{{ ad.category }}</mat-card-subtitle> <!-- Assuming 'name' is the category's name -->
+          <mat-card-title>{{ ad.title }} - {{ ad.price }} Ft.</mat-card-title>
+          <mat-card-subtitle>{{ ad.category }}</mat-card-subtitle>
         </div>
       </mat-card-header>
   
+      <!-- Hirdetés kép -->
       <img mat-card-image [src]="ad.imageUrl" alt="Advertisement image">
   
       <mat-card-content>

@@ -187,8 +187,27 @@ router.delete("/:id", tokencheck, async (req: any, res: any) => {
 // Hirdetések lekérése (Mindenki számára elérhető)
 router.get("/", tokencheck, async (_req: Request, res: Response) => {
   try {
-    const ads = await AppDataSource.getRepository(Advertisements).find();
-    res.status(200).json({ advertisements: ads });
+    // Lekérjük a hirdetéseket, és a kapcsolódó felhasználó adatokat is
+    const ads = await AppDataSource.getRepository(Advertisements)
+      .createQueryBuilder("ad")
+      .leftJoinAndSelect("ad.user", "user")  // Felhasználó adatainak lekérése
+      .leftJoinAndSelect("ad.category", "category")  // Kategória adatainak lekérése
+      .getMany();
+
+    // Válasz visszaküldése a felhasználó nevével és ID-jával
+    res.status(200).json({
+      advertisements: ads.map(ad => ({
+        title: ad.title,
+        price: ad.price,
+        description: ad.description,
+        category: ad.category.name,  // Kategória neve
+        imageUrl: ad.imagefilename,  // Kép URL-je
+        user: {
+          id: ad.user.id,           // Felhasználó ID-ja
+          name: ad.user.name,       // Felhasználó neve
+        }
+      })),
+    });
   } catch (error) {
     console.error("Hiba a hirdetések lekérése során:", error);
     res.status(500).json({ message: "Hiba történt a hirdetések lekérésekor.", error });
