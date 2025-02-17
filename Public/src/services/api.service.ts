@@ -41,6 +41,14 @@ export class ApiService {
   }
   
 
+  registration(data: object) {
+    return this.http.post(`${this.server}/users/register`, data);
+  }
+  
+  login(data:object){
+    return this.http.post(`${this.server}/users/login`, data);
+  }
+
 }
 
 
