@@ -5,15 +5,17 @@
   </div>
 
   <div class="buttonDiv" *ngIf="!isMobile">
-    <!-- Hirdetések menü -->
-    <button mat-button [routerLink]="'/registration'">Regisztráció</button>
-    <button mat-button [routerLink]="'/login'">Login</button>
-    <button mat-button [matMenuTriggerFor]="categoriesMenu">Hirdetések</button>
+    <!-- Conditional display based on login state -->
+    <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/registration'">Regisztráció</button>
+    <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/login'">Login</button>
+    
+    <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/ads'">Hirdetések</button>
     <mat-menu #categoriesMenu="matMenu">
       <button mat-menu-item *ngFor="let category of categories">{{ category.name }}</button>
     </mat-menu>
-    <button mat-button [routerLink]="'/profile'">Saját profil</button>
-    <button mat-button id="logout">Kijelentkezés</button>
+
+    <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/profile'">Saját profil</button>
+    <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/logout'">Kijelentkezés</button>
   </div>
 
   <!-- Hamburger menü ikon (csak mobilon) -->
@@ -24,12 +26,11 @@
 
 <!-- Mobil menü -->
 <div *ngIf="isMobile && isMenuOpen" class="mobile-menu">
-  <button mat-button [routerLink]="'/registration'">Regisztráció</button>
-  <button mat-button [routerLink]="'/login'">Login</button>
-  <button mat-button [matMenuTriggerFor]="categoriesMenu">Hirdetések</button>
-  <mat-menu #categoriesMenu="matMenu">
-    <button mat-menu-item *ngFor="let category of categories">{{ category.name }}</button>
-  </mat-menu>
-  <button mat-button>Saját profil</button>
-  <button mat-button>Kijelentkezés</button>
+  <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/registration'">Regisztráció</button>
+  <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/login'">Login</button>
+  
+  <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/ads'">Hirdetések</button>
+  
+  <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/profile'">Saját profil</button>
+  <button mat-button *ngIf="isLoggedIn$ | async"  [routerLink]="'/logout'">Kijelentkezés</button>
 </div>

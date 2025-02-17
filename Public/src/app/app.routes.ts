@@ -1,6 +1,9 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from '../components/login/login.component';
 import { RegistrationComponent } from '../components/registration/registration.component';
+import { AdsComponent } from '../components/ads/ads.component';
+import { UserAuthGuard } from '../guards/user-auth.guard';
+import { LogoutComponent } from '../components/logout/logout.component';
 
 
 
@@ -20,12 +23,14 @@ export const routes: Routes = [
 
   /**
    * user routes
-   
+   */
   {
-    path: '', component:, canActivate: [UserAuthGuard]
+    path: 'ads', component:AdsComponent, canActivate: [UserAuthGuard]
   },
-*/
 
+  {
+    path: 'logout', component: LogoutComponent, canActivate: [UserAuthGuard]
+  },
   /**
    * Other routes
    */

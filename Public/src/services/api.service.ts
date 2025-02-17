@@ -14,30 +14,21 @@ export class ApiService {
   private tokenName = environment.tokenName;
   private server = environment.serverUrl;
 
-  getToken(): string | null {
-    return localStorage.getItem("auth_token"); // Ne az environment változóból vedd, hanem közvetlenül!
+  getToken():String | null{
+    return localStorage.getItem(this.tokenName);
   }
-  
 
-  /**
-   * Header beállítása a bejelentkezési tokennel
-   */
-  tokenHeader(): { headers: HttpHeaders } {
+  tokenHeader():{ headers: HttpHeaders }{
     const token = this.getToken();
-    if (!token) {
-      console.warn('Nincs token a localStorage-ben!');
-      return { headers: new HttpHeaders() }; // Üres fejléc, ha nincs token
-    }
-    return {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      })
-    };
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return { headers }
   }
   
 
   getCategories(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.server}/categories`);
+    return this.http.get<any[]>(`${this.server}/categories`, this.tokenHeader());
   }
   
 

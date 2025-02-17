@@ -57,7 +57,7 @@ export class LoginComponent {
         if (this.invalidFields.length === 0) {
           this.showMessage('Sikeres bejelentkezés!', 'success');
           this.auth.login(res.token);
-          this.router.navigateByUrl('/registration');
+          this.router.navigateByUrl('/ads');
         } else {
           this.showMessage('HIBA: ' + (res.message || 'Ismeretlen hiba'), 'error');
         }
