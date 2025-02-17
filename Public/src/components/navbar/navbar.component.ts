@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
+import { Router, RouterModule } from '@angular/router';
 
 
 @Component({
@@ -11,14 +12,14 @@ import { ApiService } from '../../services/api.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   standalone: true,
-  imports: [MatButtonModule, MatMenuModule, CommonModule, MatIconModule],
+  imports: [MatButtonModule, MatMenuModule, CommonModule, MatIconModule, RouterModule],
 })
 export class NavbarComponent implements OnInit {
   isMobile: boolean = false;
   isMenuOpen: boolean = false;
   categories: any[] = []; // Kategóriák tárolása
 
-  constructor(private api: ApiService) {} // API injektálása
+  constructor(private api: ApiService, private router: Router) {} // Inject Router) {} // API injektálása
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {

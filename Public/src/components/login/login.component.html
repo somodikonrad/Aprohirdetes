@@ -1,0 +1,20 @@
+<form class="form flex flex-center" [formGroup]="loginForm">
+    <h3>Bejelentkezés</h3>
+
+    <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email">
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email megadása kötelező</mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Érvénytelen email</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Jelszó</mat-label>
+        <input type="password" matInput formControlName="password">
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">A jelszó megadása kötelező</mat-error>
+    </mat-form-field>
+
+
+    <button mat-stroked-button (click)="submit()">Bejelentkezés</button>
+</form>
+
