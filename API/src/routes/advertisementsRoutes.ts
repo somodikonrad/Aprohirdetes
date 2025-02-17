@@ -2,45 +2,60 @@ import express, { Request, Response, NextFunction, Router } from "express";
 import { AppDataSource } from "../data-source";
 import { Advertisements } from "../entity/Advertisements";
 import { User } from "../entity/User";
-import jwt from "jsonwebtoken";
-import { Category } from "../entity/Category";
 import multer from 'multer';
-import path from 'path';
 import { tokencheck } from "../utils/tokenUtils";
+import cron from "node-cron";
+import { Category } from "../entity/Category";
 
 const app = express();
 
-// Képfeltöltés
+
+// MULTER CONFIG
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
   },
   filename: function (req, file, cb) {
-    const timestamp = Date.now();
-    const originalname = file.originalname.replace(' ', '_');
-    const name = originalname.substring(0, originalname.lastIndexOf('.'));
-    const ext = originalname.substring(originalname.lastIndexOf('.'));
-    cb(null, name + '-' + timestamp + ext);
+      const timestamp = Date.now();
+      const originalname = file.originalname.replace(' ', '_');
+      const name = originalname.substring(0, originalname.lastIndexOf('.'));
+      const ext = originalname.substring(originalname.lastIndexOf('.'));
+      cb(null, name + '-' + timestamp + ext);
   }
 });
 
-const upload = multer({
-  storage: storage,
-  fileFilter: (req: any, file: any, cb: any) => {
-    const filetypes = /jpeg|jpg|png|gif/;
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
-    
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(new Error("Csak képfájlok engedélyezettek!"), false);
-    }
-  }
-});
+const upload = multer({ storage: storage })
 
 const router = Router();
 app.use(express.json()); // Biztosítja a JSON-ként érkező kérés feldolgozását
+
+// 1 hét utáni törlő függvény
+export const deleteExpiredAds = async () => {
+  const adRepository = AppDataSource.getRepository(Advertisements);
+
+  // Határidő kiszámítása: 7 nappal ezelőtti dátum
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  try {
+    // Hirdetések törlése egy SQL lekérdezéssel
+    const result = await adRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Advertisements)
+      .where("date < :oneWeekAgo", { oneWeekAgo })
+      .execute();
+
+    if (result.affected && result.affected > 0) {
+      console.log(`🗑️ ${result.affected} lejárt hirdetés törölve!`);
+    } else {
+      console.log("✅ Nincs lejárt hirdetés.");
+    }
+  } catch (error) {
+    console.error("❌ Hiba a lejárt hirdetések törlése során:", error);
+  }
+};
+
 
 // 📌 Hirdetés létrehozása
 router.post("/", async (req: any, res: any) => {
@@ -85,42 +100,51 @@ router.post("/", async (req: any, res: any) => {
 });
 
 // 📌 Hirdetés módosítása (Csak a saját hirdetést módosíthatja)
-router.put("/:id", tokencheck, async (req: any, res: any) => {
+router.patch("/:id", tokencheck, async (req: any, res: any) => {
+  console.log("Request Params:", req.params);  // Az id ellenőrzése
+  console.log("Request Body:", req.body);      // A módosított mezők
+
   try {
-    const { id } = req.params;
-    const { category, title, description, price, image } = req.body;
+    const { id } = req.params;  // Kivesszük az id-t a paraméterekből
+    const { categoryID, title, description, price, image } = req.body;  // A body-ban kapott mezők
 
-    const invalidFields: string[] = [];
+    console.log("Querying with ID:", id);  // Id logolása a lekérdezés előtt
 
-    if (!category) invalidFields.push("category");
-    if (!title) invalidFields.push("title");
-    if (!description) invalidFields.push("description");
-    if (!price) invalidFields.push("price");
-
-    if (invalidFields.length > 0) {
-      return res.status(400).json({
-        message: "Kérem, töltse ki az összes mezőt!",
-        invalidFields,
-      });
-    }
-
+    // Lekérdezzük a hirdetést az adatbázisból az ID alapján
     const adRepository = AppDataSource.getRepository(Advertisements);
-    const ad = await adRepository.findOne({ where: { id }, relations: ["user"] });
+    const ad = await adRepository.findOne({ where: { id }, relations: ["user", "category"] });
 
     if (!ad) {
+      console.log("Hirdetés nem található!");
       return res.status(404).json({ message: "Hirdetés nem található!" });
     }
 
+    console.log("Found Ad:", ad);  // Ellenőrizzük, hogy találtunk adatot
+
+    // Csak akkor engedjük módosítani, ha a felhasználó jogosult rá
     if (ad.user.id !== req.user.id) {
       return res.status(403).json({ message: "Nincs jogosultságod ezt a hirdetést módosítani!" });
     }
 
-    ad.category = category || ad.category;
-    ad.title = title || ad.title;
-    ad.description = description || ad.description;
-    ad.price = price || ad.price;
-    ad.imagefilename = image || ad.imagefilename;
+    // Ha van módosított mező, frissítjük azt
+    if (categoryID !== undefined) {
+      // Ha nincs kategória, akkor új kategóriát rendelünk hozzá
+      const categoryRepository = AppDataSource.getRepository(Category);
+      const category = await categoryRepository.findOne({ where: { id: categoryID } });
 
+      if (!category) {
+        return res.status(404).json({ message: "Kategória nem található!" });
+      }
+
+      ad.category = category;  // Frissítjük a kategóriát
+    }
+
+    if (title !== undefined) ad.title = title;
+    if (description !== undefined) ad.description = description;
+    if (price !== undefined) ad.price = price;
+    if (image !== undefined) ad.imagefilename = image;
+
+    // Az adatok mentése az adatbázisba
     await adRepository.save(ad);
 
     res.status(200).json({ message: "Hirdetés sikeresen módosítva!", advertisement: ad });
@@ -130,6 +154,11 @@ router.put("/:id", tokencheck, async (req: any, res: any) => {
     res.status(500).json({ message: "Hiba történt a hirdetés módosításakor.", error });
   }
 });
+
+
+
+
+
 
 // 📌 Hirdetés törlése (Csak a saját hirdetését törölheti)
 router.delete("/:id", tokencheck, async (req: any, res: any) => {
@@ -149,7 +178,7 @@ router.delete("/:id", tokencheck, async (req: any, res: any) => {
 
     await adRepository.remove(ad);
 
-    res.status(200).json({ message: "Hirdetés sikeresen törölve!" });
+    res.status(200).json({ message: "Hirdetés sikeresen törölve✅!" });
 
   } catch (error) {
     console.error("Hiba a hirdetés törlése során:", error);
@@ -197,5 +226,32 @@ router.post('/uploads', upload.single('file'), (req: any, res: any) => {
   }
   res.status(200).json({ message: 'Sikeres képfeltöltés!', file: req.file });
 });
+
+// Hirdetés autodelete 1 hét után
+cron.schedule("* * * * *", async () => { // Naponta éjfélkor fut
+  console.log("🔄 Hirdetések ellenőrzése...");
+
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  try {
+    const adRepository = AppDataSource.getRepository(Advertisements);
+
+    const oldAds = await adRepository
+      .createQueryBuilder("ad")
+      .where("ad.date < :oneWeekAgo", { oneWeekAgo })
+      .getMany();
+
+    if (oldAds.length > 0) {
+      await adRepository.remove(oldAds);
+      console.log(`✅ ${oldAds.length} régi hirdetés törölve.`);
+    } else {
+      console.log("ℹ️ Nincsenek lejárt hirdetések.");
+    }
+  } catch (error) {
+    console.error("❌ Hiba a lejárt hirdetések törlése során:", error);
+  }
+});
+
 
 export default router;
