@@ -18,28 +18,78 @@ import { Router } from '@angular/router';
   imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, CommonModule, MatCardModule, MatExpansionModule, MatIconModule, FormsModule],  
 })
 export class AdsComponent implements OnInit {
-  advertisements: any[] = []; // Adatok tárolása
+  advertisements: any[] = []; // Hirdetések
+  categories: any[] = []; // Kategóriák listája
+  addAdFormVisible = false; // A form láthatósága
+  newAd = {
+    title: '',
+    price: null,
+    category: '',  // Kategória választás
+    description: '',
+    image: null as File | null,
+  };
 
-  constructor(private apiService: ApiService,
-    private router: Router
-  ) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit(): void {
     // Hirdetések lekérése
     this.apiService.getAds().subscribe({
       next: (data) => {
-        console.log(data)
-        this.advertisements = data; // Beállítjuk a hirdetéseket
+        this.advertisements = data;
       },
       error: (err) => {
         console.error('Hiba történt a hirdetések lekérésekor:', err);
       },
     });
-  }
 
- 
+    // Kategóriák lekérése
+    this.categorieLoad();
+}
+
+categorieLoad() {
+  this.apiService.getCategories().subscribe({
+    next: (res: any) => {
+      console.log('Kategóriák betöltve:', res);  // Logoljuk a választ
+      this.categories = res.categories;  // Ellenőrizd, hogy van-e 'categories' property a válaszban
+    },
+    error: (err: any) => {
+      console.error('Hiba történt a kategóriák betöltésekor:', err);
+    },
+  });
+}
+
 
   navigate(adId: number) {
     this.router.navigate(['/singleAd', adId]);
+  }
+
+  toggleAddAdForm() {
+    this.addAdFormVisible = !this.addAdFormVisible;
+  }
+
+  saveAd() {
+    if (
+      this.newAd.title &&
+      this.newAd.price &&
+      this.newAd.description &&
+      this.newAd.category
+    ) {
+      console.log('Új hirdetés mentése:', this.newAd);
+      this.addAdFormVisible = false;
+      // Hozzáadhatod a mentési logikát, pl. HTTP POST kérés küldése az API-hoz
+    } else {
+      console.log('Kérlek, töltsd ki az összes mezőt!');
+    }
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.newAd.image = file;
+    }
+  }
+
+  cancelAddAd() {
+    this.addAdFormVisible = false;
   }
 }

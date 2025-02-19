@@ -55,4 +55,4 @@ export class ApiService {
     return this.http.get<Advertisement>(`${this.server}/ads/${id}`, this.tokenHeader());
   }
   
-}
+} 
