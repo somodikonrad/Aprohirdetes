@@ -9,7 +9,13 @@
   button {
     color: white !important;
     font-size: 1.1em; 
-    padding: 10px 20px;  
+    padding: 10px 20px; 
+    &:hover {
+      border-color: #04ddd8; /* Világító sárga szín */
+      box-shadow: 0 0 20px #04ddd8; /* Erősebb világítás a hover állapotban */
+      color: #ffffff;
+
+    } 
   }
   button:hover, #logout {
     color: rgb(226, 224, 224) !important;

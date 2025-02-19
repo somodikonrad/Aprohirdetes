@@ -43,12 +43,15 @@
       background-color: #04ddd900 ;
       color: #04ddd8;
       &:hover {
-        background-color: #04ddd8 !important;
-        color: white;
-      }
+        border-color: #04ddd8; /* Világító sárga szín */
+        box-shadow: 0 0 20px #04ddd8; /* Erősebb világítás a hover állapotban */
+        background-color: #333333;
+        color: #ffffff;
   
     }
-  }
+
+   
+    }}
   
 
   

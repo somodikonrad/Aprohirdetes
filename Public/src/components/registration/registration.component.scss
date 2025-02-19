@@ -41,8 +41,11 @@
       border-radius: 8px;
       transition: all 0.3s ease-in-out;
       &:hover {
-        background-color: #04ddd8;
-        color: white;
+        border-color: #04ddd8; /* Világító sárga szín */
+        box-shadow: 0 0 20px #04ddd8; /* Erősebb világítás a hover állapotban */
+        background-color: #333333;
+        color: #ffffff;
+  
       }
   
     }

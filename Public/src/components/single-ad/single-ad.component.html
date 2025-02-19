@@ -1,34 +1,75 @@
 <div class="ads-container">
     <mat-card class="ad-card">
-      <mat-card-header>
+      
+      <mat-card-header class="ad-header">
+        <!-- Felhasználói információk -->
         <div class="header-content">
-          <div class="user-info">
-            <mat-icon class="profile-icon">account_circle</mat-icon>
-            <span class="user-name">{{ advertisement?.user?.name }}</span> 
-            <span class="user-id">ID: {{ advertisement?.user?.id }}</span> 
+
+            <div class="top">  <div class="user-info">
+            <mat-icon matTooltip="Felhasználó profilja" class="profile-icon">account_circle</mat-icon>
+            <span class="user-name">{{ advertisement?.user?.name }}</span>
+            <span class="user-id">ID: {{ advertisement?.user?.id }}</span>
           </div>
-          <mat-card-title>
-            <span class="title">{{ advertisement?.title }}</span>
-            <span class="title">{{ advertisement?.price }} Ft.</span>
+
+          <div class="user-info">  <mat-card-actions>
+            <button mat-button color="primary" class="buy-button">Megveszem</button>
+          </mat-card-actions></div></div>
+        
+  
+          <!-- Hirdetés címe és ára -->
+          <mat-card-title class="ad-title">
+            <div class="category-info">
+                <span class="title category">Kategória:</span>
+                <span [style.background-color]="advertisement?.category?.color" class="title category">{{ advertisement?.category?.name}}</span>
+              </div>
+           
           </mat-card-title>
-          
-          <mat-card-subtitle><span  [style.background-color]="advertisement?.category?.color"class="title category">{{ advertisement?.category?.name }}</span></mat-card-subtitle>
+  
+          <!-- Kategória és cím -->
+          <mat-card-subtitle>
+           
+  
+            
+          </mat-card-subtitle>
         </div>
       </mat-card-header>
   
-      <img mat-card-image [src]="advertisement?.imageUrl" alt="Advertisement image">
-  
-      <mat-card-content>
+      <!-- Hirdetés képe -->
+      <img mat-card-image [src]="advertisement?.imageUrl" alt="Advertisement image" class="ad-image">
+      
+      <!-- Hirdetés leírása -->
+      <mat-card-content class="ad-description">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>Leírás:</mat-panel-title>
+            <mat-panel-title >Leírás:</mat-panel-title>
           </mat-expansion-panel-header>
-          <p>{{ advertisement?.description }}</p>
+          <br>
+          <div class="category-info">
+          <div class="title">
+            {{ advertisement?.description }}
+          </div>
+        </div>
+          <!-- Termék Információk -->
+          <div class="product-info">
+            <div class="category-info">
+              <span style="background-color:#2b2b2b;" class="title">Termék:</span>
+              <span class="title">{{ advertisement?.title }}</span>
+            </div>
+            <div class="category-info">
+              <span style="background-color:#2b2b2b;" class="title">Ár:</span>
+              <span class="title ">{{ advertisement?.price }} Ft</span>
+            </div>
+            <div class="category-info">
+              <span style="background-color:#2b2b2b;" class=" title">Cím:</span>
+              <span class="title">{{ advertisement?.user?.address }}</span>
+            </div>
+          </div>
         </mat-expansion-panel>
       </mat-card-content>
+      
   
-      <mat-card-actions>
-        <button mat-button>Megveszem</button>
-      </mat-card-actions>
+      <!-- Akciók -->
+     
     </mat-card>
-</div>
+  </div>
+  
