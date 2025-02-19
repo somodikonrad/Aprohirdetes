@@ -1,19 +1,25 @@
 <div class="ads-container">
     <mat-card class="ad-card">
+      
       <mat-card-header class="ad-header">
         <!-- Felhasználói információk -->
         <div class="header-content">
 
-          <div class="user-info">
+            <div class="top">  <div class="user-info">
             <mat-icon matTooltip="Felhasználó profilja" class="profile-icon">account_circle</mat-icon>
             <span class="user-name">{{ advertisement?.user?.name }}</span>
             <span class="user-id">ID: {{ advertisement?.user?.id }}</span>
           </div>
+
+          <div class="user-info">  <mat-card-actions>
+            <button mat-button color="primary" class="buy-button">Megveszem</button>
+          </mat-card-actions></div></div>
+        
   
           <!-- Hirdetés címe és ára -->
           <mat-card-title class="ad-title">
             <div class="category-info">
-                <span class="title">Kategória:</span>
+                <span class="title category">Kategória:</span>
                 <span [style.background-color]="advertisement?.category?.color" class="title category">{{ advertisement?.category?.name}}</span>
               </div>
            
@@ -35,24 +41,26 @@
       <mat-card-content class="ad-description">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>Leírás:</mat-panel-title>
+            <mat-panel-title >Leírás:</mat-panel-title>
           </mat-expansion-panel-header>
           <br>
-          <span class="title">
+          <div class="category-info">
+          <div class="title">
             {{ advertisement?.description }}
-        </span>
+          </div>
+        </div>
           <!-- Termék Információk -->
           <div class="product-info">
             <div class="category-info">
-              <span class="title">Termék:</span>
+              <span style="background-color:#2b2b2b;" class="title">Termék:</span>
               <span class="title">{{ advertisement?.title }}</span>
             </div>
             <div class="category-info">
-              <span class="title">Ár:</span>
-              <span class="title price">{{ advertisement?.price }} Ft</span>
+              <span style="background-color:#2b2b2b;" class="title">Ár:</span>
+              <span class="title ">{{ advertisement?.price }} Ft</span>
             </div>
             <div class="category-info">
-              <span class="category title">Cím:</span>
+              <span style="background-color:#2b2b2b;" class=" title">Cím:</span>
               <span class="title">{{ advertisement?.user?.address }}</span>
             </div>
           </div>
@@ -61,9 +69,7 @@
       
   
       <!-- Akciók -->
-      <mat-card-actions>
-        <button mat-button color="primary" class="buy-button">Megveszem</button>
-      </mat-card-actions>
+     
     </mat-card>
   </div>
   

@@ -8,7 +8,6 @@ import { SingleAdComponent } from '../components/single-ad/single-ad.component';
 
 
 
-
 export const routes: Routes = [
 
   /**
@@ -21,27 +20,30 @@ export const routes: Routes = [
     path: 'registration', component: RegistrationComponent
   },
 
-
   /**
    * user routes
    */
   {
-    path: 'ads', component:AdsComponent, canActivate: [UserAuthGuard]
+    path: 'ads/:category', component: AdsComponent, canActivate: [UserAuthGuard]  // Kategória paramétert várunk
   },
 
   {
-    path: 'singleAd/:id', component:SingleAdComponent, canActivate: [UserAuthGuard]
+    path: 'ads', component: AdsComponent, canActivate: [UserAuthGuard] // Alapértelmezett route
+  },
+
+  {
+    path: 'singleAd/:id', component: SingleAdComponent, canActivate: [UserAuthGuard]
   },
 
   {
     path: 'logout', component: LogoutComponent, canActivate: [UserAuthGuard]
   },
+
   /**
    * Other routes
    */
-
   {
     path: '', redirectTo: 'ads', pathMatch: 'full'
   },
- 
 ];
+

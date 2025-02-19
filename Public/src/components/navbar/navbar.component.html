@@ -6,13 +6,13 @@
 
   <div class="buttonDiv" *ngIf="!isMobile">
 
-    <!-- Kategóriák menü -->
     <mat-menu #categoriesMenu="matMenu">
-      <button mat-menu-item  class="hirdetesek"  [routerLink]="'/ads'">Hirdetések</button>
-      <button mat-menu-item *ngFor="let category of categories">
-        <span  class="category-name">{{ category.name }}</span>
+      <button mat-menu-item class="hirdetesek" [routerLink]="'/ads'">Hirdetések</button>
+      <button mat-menu-item *ngFor="let category of categories" [routerLink]="['/ads', category.name]">
+        <span class="category-name">{{ category.name }}</span>
       </button>
     </mat-menu>
+    
 
     <!-- Más menüpontok -->
     <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/registration'">Regisztráció</button>
@@ -32,14 +32,13 @@
 <!-- Mobil menü -->
 <div *ngIf="isMobile && isMenuOpen" class="mobile-menu">
 
-      <!-- Kategóriák menü -->
-      <mat-menu #categoriesMenu="matMenu">
-        <button mat-menu-item class="hirdetesek" [routerLink]="'/ads'">Hirdetések</button>
-        <button mat-menu-item *ngFor="let category of categories">
-          
-          <span class="category-name">{{ category.name }}</span>
-        </button>
-      </mat-menu>
+  <mat-menu #categoriesMenu="matMenu">
+    <button mat-menu-item class="hirdetesek" [routerLink]="'/ads'">Hirdetések</button>
+    <button mat-menu-item *ngFor="let category of categories" [routerLink]="['/ads', category.name]">
+      <span class="category-name">{{ category.name }}</span>
+    </button>
+  </mat-menu>
+  
   
   <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/registration'">Regisztráció</button>
   <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/login'">Login</button>

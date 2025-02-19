@@ -128,3 +128,28 @@ button:hover {
   font-weight: bold;
   color: #ffffff;
 }
+
+
+mat-chip-set {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px; /* Optional: Add spacing between chips */
+  justify-content: center; /* Horizontally center the chips */
+  width: 100%; /* Ensure it takes up the full width */
+  margin: 0 auto !important; /* Horizontally center the container */
+  
+}
+
+
+
+mat-chip {
+  &:hover {
+    border-color: #04ddd8; /* Világító sárga szín */
+    box-shadow: 0 0 20px #04ddd8; /* Erősebb világítás a hover állapotban */
+    background-color: #333333;
+    color: #ffffff;
+
+  }
+}
+
+

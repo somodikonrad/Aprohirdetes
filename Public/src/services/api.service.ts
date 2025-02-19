@@ -54,5 +54,9 @@ export class ApiService {
   getAdById(id: string): Observable<Advertisement> {
     return this.http.get<Advertisement>(`${this.server}/ads/${id}`, this.tokenHeader());
   }
+
+  getAdsByCategory(category: string): Observable<any[]> {
+    return this.http.get<any>(`${this.server}/ads/category/${category}`)
+  }
   
 }
