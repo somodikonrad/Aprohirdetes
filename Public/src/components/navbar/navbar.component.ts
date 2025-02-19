@@ -43,12 +43,14 @@ export class NavbarComponent implements OnInit {
   categorieLoad() {
     this.api.getCategories().subscribe({
       next: (res: any) => {
-        this.categories = res.categories;
+        console.log('Kategóriák betöltve:', res);  // Logoljuk a választ
+        this.categories = res.categories;  // Ellenőrizd, hogy van-e 'categories' property a válaszban
       },
       error: (err: any) => {
         console.error('Hiba történt a kategóriák betöltésekor:', err);
       },
     });
   }
+  
 
 }

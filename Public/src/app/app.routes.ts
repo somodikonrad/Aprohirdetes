@@ -4,6 +4,7 @@ import { RegistrationComponent } from '../components/registration/registration.c
 import { AdsComponent } from '../components/ads/ads.component';
 import { UserAuthGuard } from '../guards/user-auth.guard';
 import { LogoutComponent } from '../components/logout/logout.component';
+import { SingleAdComponent } from '../components/single-ad/single-ad.component';
 
 
 
@@ -29,6 +30,10 @@ export const routes: Routes = [
   },
 
   {
+    path: 'singleAd/:id', component:SingleAdComponent, canActivate: [UserAuthGuard]
+  },
+
+  {
     path: 'logout', component: LogoutComponent, canActivate: [UserAuthGuard]
   },
   /**
@@ -36,7 +41,7 @@ export const routes: Routes = [
    */
 
   {
-    path: '', redirectTo: 'rooms', pathMatch: 'full'
+    path: '', redirectTo: 'ads', pathMatch: 'full'
   },
  
 ];

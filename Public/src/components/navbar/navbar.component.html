@@ -5,15 +5,20 @@
   </div>
 
   <div class="buttonDiv" *ngIf="!isMobile">
-    <!-- Conditional display based on login state -->
+
+    <!-- Kategóriák menü -->
+    <mat-menu #categoriesMenu="matMenu">
+      <button mat-menu-item  class="hirdetesek"  [routerLink]="'/ads'">Hirdetések</button>
+      <button mat-menu-item *ngFor="let category of categories">
+        <span  class="category-name">{{ category.name }}</span>
+      </button>
+    </mat-menu>
+
+    <!-- Más menüpontok -->
     <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/registration'">Regisztráció</button>
     <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/login'">Login</button>
     
-    <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/ads'">Hirdetések</button>
-    <mat-menu #categoriesMenu="matMenu">
-      <button mat-menu-item *ngFor="let category of categories">{{ category.name }}</button>
-    </mat-menu>
-
+    <button mat-button [matMenuTriggerFor]="categoriesMenu" *ngIf="isLoggedIn$ | async" >Hirdetések</button>
     <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/profile'">Saját profil</button>
     <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/logout'">Kijelentkezés</button>
   </div>
@@ -26,11 +31,21 @@
 
 <!-- Mobil menü -->
 <div *ngIf="isMobile && isMenuOpen" class="mobile-menu">
+
+      <!-- Kategóriák menü -->
+      <mat-menu #categoriesMenu="matMenu">
+        <button mat-menu-item class="hirdetesek" [routerLink]="'/ads'">Hirdetések</button>
+        <button mat-menu-item *ngFor="let category of categories">
+          
+          <span class="category-name">{{ category.name }}</span>
+        </button>
+      </mat-menu>
+  
   <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/registration'">Regisztráció</button>
   <button mat-button *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/login'">Login</button>
   
-  <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/ads'">Hirdetések</button>
+  <button mat-button *ngIf="isLoggedIn$ | async"  [matMenuTriggerFor]="categoriesMenu">Hirdetések</button>
   
   <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/profile'">Saját profil</button>
-  <button mat-button *ngIf="isLoggedIn$ | async"  [routerLink]="'/logout'">Kijelentkezés</button>
+  <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="'/logout'">Kijelentkezés</button>
 </div>

@@ -9,6 +9,9 @@ export class Category extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
+  @Column({ type: "varchar", length: 7}) 
+  color: string; 
+
   @OneToMany(() => Advertisements, (advertisement) => advertisement.category)
   advertisements: Advertisements[];
 }

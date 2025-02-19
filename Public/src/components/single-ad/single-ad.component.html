@@ -1,0 +1,34 @@
+<div class="ads-container">
+    <mat-card class="ad-card">
+      <mat-card-header>
+        <div class="header-content">
+          <div class="user-info">
+            <mat-icon class="profile-icon">account_circle</mat-icon>
+            <span class="user-name">{{ advertisement?.user?.name }}</span> 
+            <span class="user-id">ID: {{ advertisement?.user?.id }}</span> 
+          </div>
+          <mat-card-title>
+            <span class="title">{{ advertisement?.title }}</span>
+            <span class="title">{{ advertisement?.price }} Ft.</span>
+          </mat-card-title>
+          
+          <mat-card-subtitle><span  [style.background-color]="advertisement?.categoryy?.color"class="title category">{{ advertisement?.category }}</span></mat-card-subtitle>
+        </div>
+      </mat-card-header>
+  
+      <img mat-card-image [src]="advertisement?.imageUrl" alt="Advertisement image">
+  
+      <mat-card-content>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Leírás:</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{ advertisement?.description }}</p>
+        </mat-expansion-panel>
+      </mat-card-content>
+  
+      <mat-card-actions>
+        <button mat-button>Megveszem</button>
+      </mat-card-actions>
+    </mat-card>
+</div>

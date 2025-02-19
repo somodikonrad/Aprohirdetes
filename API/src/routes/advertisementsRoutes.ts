@@ -197,6 +197,7 @@ router.get("/", tokencheck, async (_req: Request, res: Response) => {
     // Válasz visszaküldése a felhasználó nevével és ID-jával
     res.status(200).json({
       advertisements: ads.map(ad => ({
+        id: ad.id,
         title: ad.title,
         price: ad.price,
         description: ad.description,
@@ -213,6 +214,48 @@ router.get("/", tokencheck, async (_req: Request, res: Response) => {
     res.status(500).json({ message: "Hiba történt a hirdetések lekérésekor.", error });
   }
 });
+
+// Hirdetések lekérése ID szerint
+router.get("/:id", tokencheck, async (req: any, res: any) => {
+  try {
+    const adId = req.params.id;
+    const ad = await AppDataSource.getRepository(Advertisements)
+      .createQueryBuilder("ad")
+      .leftJoinAndSelect("ad.user", "user")
+      .leftJoinAndSelect("ad.category", "category")  // Kategória összekapcsolása
+      .where("ad.id = :id", { id: adId })
+      .getOne();
+    
+    if (!ad) {
+      return res.status(404).json({ message: "Hirdetés nem található" });
+    }
+    
+    // Kategória részleteinek visszaküldése
+    res.status(200).json({
+      id: ad.id,
+      title: ad.title,
+      price: ad.price,
+      description: ad.description,
+      categoryy: { 
+        id: ad.category.id, // Kategória ID
+        name: ad.category.name, // Kategória név
+        color: ad.category.color // Kategória szín (ha szükséges)
+      },
+      imageUrl: ad.imagefilename,
+      user: {
+        id: ad.user.id,
+        name: ad.user.name,
+        email: ad.user.email,
+        address: ad.user.address
+      }
+    });
+  } catch (error) {
+    console.error("Hiba a hirdetés lekérése során:", error);
+    res.status(500).json({ message: "Hiba történt a hirdetés lekérésekor.", error });
+  }
+});
+
+
 
 // Hirdetések lekérése adott kategóriában
 router.get("/category/:categoryName", async (req: any, res: any) => {
