@@ -201,12 +201,17 @@ router.get("/", tokencheck, async (_req: Request, res: Response) => {
         title: ad.title,
         price: ad.price,
         description: ad.description,
-        category: ad.category.name,  // Kategória neve
+        category: { 
+          id: ad.category.id, // Kategória ID
+          name: ad.category.name, // Kategória név
+          color: ad.category.color // Kategória szín (ha szükséges)
+        },  // Kategória neve
         imageUrl: ad.imagefilename,  // Kép URL-je
         user: {
           id: ad.user.id,           // Felhasználó ID-ja
           name: ad.user.name,       // Felhasználó neve
         }
+
       })),
     });
   } catch (error) {
@@ -236,7 +241,7 @@ router.get("/:id", tokencheck, async (req: any, res: any) => {
       title: ad.title,
       price: ad.price,
       description: ad.description,
-      categoryy: { 
+      category: { 
         id: ad.category.id, // Kategória ID
         name: ad.category.name, // Kategória név
         color: ad.category.color // Kategória szín (ha szükséges)

@@ -9,7 +9,7 @@
             <span class="user-id">ID: {{ ad.user.id }}</span> <!-- Felhasználó ID-ja -->
           </div>
           <mat-card-title>{{ ad.title }} - {{ ad.price }} Ft.</mat-card-title>
-          <mat-card-subtitle>{{ ad.category }}</mat-card-subtitle>
+          <mat-card-subtitle [style.background-color]="ad?.category?.color"class="title category">{{ ad.category.name }}</mat-card-subtitle>
         </div>
       </mat-card-header>
   

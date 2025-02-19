@@ -1,4 +1,4 @@
-export interface Categoryy {
+export interface Category {
   id: number;
   name: string;
   color: string; // Szín, ha szükséges
@@ -9,7 +9,7 @@ export interface Advertisement {
   title: string;
   price: number;
   description: string;
-  category: Categoryy; // A kategória most már egy objektum
+  category: Category; // A kategória most már egy objektum
   imageUrl: string;
   user: {
     id: number;
