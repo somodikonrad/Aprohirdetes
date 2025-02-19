@@ -11,12 +11,25 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';  // MatTooltip importálása
+
 
 @Component({
   selector: 'app-single-ad',
   templateUrl: './single-ad.component.html',
   styleUrls: ['./single-ad.component.scss'],
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, CommonModule, MatCardModule, MatExpansionModule, MatIconModule, FormsModule]
+  imports: [ReactiveFormsModule, 
+    MatButtonModule, MatFormFieldModule, 
+    MatInputModule, MatSnackBarModule, 
+    CommonModule, MatCardModule, 
+    MatExpansionModule, 
+    MatIconModule, 
+    FormsModule, 
+    MatTooltipModule,
+    
+   
+   
+   ]
 })
 export class SingleAdComponent implements OnInit {
 
