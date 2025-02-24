@@ -119,13 +119,15 @@ router.post("/", upload.single('image'), async (req: any, res: any) => {
 
 
 // Hirdetés módosítása (Csak a saját hirdetést módosíthatja)
-router.patch("/:id", tokencheck, async (req: any, res: any) => {
+// Hirdetés módosítása (Csak a saját hirdetést módosíthatja)
+router.patch("/:id", tokencheck, upload.single('image'), async (req: any, res: any) => {
   console.log("Request Params:", req.params);  // Az id ellenőrzése
   console.log("Request Body:", req.body);      // A módosított mezők
 
   try {
     const { id } = req.params;  // Kivesszük az id-t a paraméterekből
-    const { categoryID, title, description, price, image } = req.body;  // A body-ban kapott mezők
+    const { categoryID, title, description, price } = req.body;  // A body-ban kapott mezők
+    const image = req.file ? req.file.filename : undefined; // Ha van új fájl, akkor az elérési útja
 
     console.log("Querying with ID:", id);  // Id logolása a lekérdezés előtt
 
@@ -161,7 +163,7 @@ router.patch("/:id", tokencheck, async (req: any, res: any) => {
     if (title !== undefined) ad.title = title;
     if (description !== undefined) ad.description = description;
     if (price !== undefined) ad.price = price;
-    if (image !== undefined) ad.imagefilename = image;
+    if (image !== undefined) ad.imagefilename = image; // Új kép fájl elérési útja
 
     // Az adatok mentése az adatbázisba
     await adRepository.save(ad);
@@ -173,6 +175,7 @@ router.patch("/:id", tokencheck, async (req: any, res: any) => {
     res.status(500).json({ message: "Hiba történt a hirdetés módosításakor.", error });
   }
 });
+
 
 // Hirdetés törlése (Csak a saját hirdetését törölheti)
 router.delete("/:id", tokencheck, async (req: any, res: any) => {

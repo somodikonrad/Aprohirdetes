@@ -71,4 +71,9 @@ export class ApiService {
     console.log(formData);
     return this.http.post(`${this.server}/ads`, formData, this.tokenHeader());
   }
+  deleteAd(adId: string): Observable<any> {
+    return this.http.delete(`${this.server}/ads/${adId}`, this.tokenHeader());
+  }
+
+
 }

@@ -1,0 +1,321 @@
+.ads-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .ad-card {
+    width: 80%;
+    max-width: 600px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #202020;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  mat-card-header {
+    background-color: #202020;
+    padding-bottom: 5%;
+    width: 100%;
+  }
+  
+  .header-content {
+    width: 100%;
+  }
+  
+  mat-card-title {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+    margin: 20px 0;
+    color: rgb(179, 179, 179);
+    padding-left: 7%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #303030;
+    padding: 2%;
+    border-radius: 30px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+
+  }
+  
+  .price {
+    background-color: #3f3f3f;
+    font-size: 1.4rem;
+    color: #f7b731;
+  }
+  
+  mat-card-subtitle {
+    display: flex;
+    color: rgb(179, 179, 179);
+    padding-left: 7%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .category-info {
+    display: flex;
+    color: rgb(179, 179, 179);
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .category {
+    background-color: #3498db;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  mat-card-content {
+    padding: 16px;
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: normal;
+  }
+  
+  mat-expansion-panel {
+    background-color: #181818;
+  }
+  
+  mat-card img {
+    max-width: 100%;
+    height: auto;
+    padding: 2%;
+  }
+  
+ 
+  
+  button {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+    font-size: 100%;
+    background-color: #111111;
+    color: #ffffff !important;
+    border-radius: 30px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+  }
+  
+  button:hover {
+    background-color: #3f3f3f !important;
+    color: white;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .profile-icon {
+    font-size: 60px;
+    color: #ccc;
+  }
+  
+  .profile-image, mat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+  
+  .user-id {
+    display: none;
+  }
+  
+  .user-name {
+    font-size: 140%;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  .ad-description {
+    padding: 16px;
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    color: #f0f0f0;
+  }
+  
+  mat-expansion-panel {
+    background-color: #181818;
+    border-radius: 8px;
+  }
+  
+  mat-expansion-panel-header {
+    background-color: #303030;
+    color: #fff;
+  }
+  
+  .description-text {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    text-align: justify;
+  }
+  
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .category-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  
+  .title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #3a3a3a;
+   
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .price {
+    color: #4CAF50;
+  }
+  
+  .category {
+    padding: 10% !important;
+  }
+
+  .buy-button {
+    width: 100%;
+    height: 100%;
+    padding: 0.7vw;
+    background-color: #535353;
+    color: #ffffff;
+    border-radius: 30px;
+    border: 2px solid transparent; /* Kezdetben nincs keret */
+    box-shadow: 0 0 10px rgba(99, 99, 99, 0.5); /* Finom világító effekt */
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .buy-button:hover {
+    border-color: #04ddd8; /* Világító sárga szín */
+    box-shadow: 0 0 20px #04ddd8; /* Erősebb világítás a hover állapotban */
+    background-color: #333333;
+    color: #ffffff;
+  }
+  
+  
+  mat-card-actions {
+    display: flex;
+  justify-content: flex-end; /* A gombot a jobb oldalra igazítja */
+  padding-top: 10px;
+  width: 100%; /* Biztosítja, hogy a teljes szélességet kihasználja */
+  box-sizing: border-box;
+  }
+  
+
+  .top{
+    display: flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content: space-between;
+  }
+
+
+  .add-button {
+    position: absolute;
+    background-color: #3f3f3f;
+    bottom: 20px;
+    right: 20px;
+    width: 10%;
+    z-index: 1000;
+  }
+   
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+   
+  .popup {
+    background: #222;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-in-out;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+   
+  .popup h3 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+   
+  .input-field {
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    font-size: 16px;
+    background: #333;
+    color: white;
+  }
+   
+  .popup-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    width: 100%;
+  }
+   
+  .popup-actions button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    background: #04ddd8;
+    color: black;
+    transition: background 0.3s ease-in-out;
+  }
+   
+   
+  .popup-actions button:hover {
+    background: #02b8a5;
+  }
+   
+  textarea.input-field {
+    min-height: 100px;
+    resize: vertical;
+  }
