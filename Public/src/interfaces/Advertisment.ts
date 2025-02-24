@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface Category {
   id: number;
   name: string;
@@ -11,10 +13,5 @@ export interface Advertisement {
   description: string;
   category: Category; // A kategória most már egy objektum
   imageUrl: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    address: string;
-  };
+  user:User
 }

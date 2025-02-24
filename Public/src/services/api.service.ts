@@ -58,5 +58,10 @@ export class ApiService {
   getAdsByCategory(category: string): Observable<any[]> {
     return this.http.get<any>(`${this.server}/ads/category/${category}`)
   }
-  
+
+  deleteAd(adId: string): Observable<any> {
+    return this.http.delete(`${this.server}/ads/${adId}`, this.tokenHeader());
+  }
+
+
 }
