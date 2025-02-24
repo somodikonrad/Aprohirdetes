@@ -6,6 +6,7 @@ import advertisementsRoutes from "./routes/advertisementsRoutes";
 import { AppDataSource } from "./data-source";
 import { seedDatabase } from "./utils/DatabaseSeed";
 import categoryRoutes from "./routes/categoryRoutes";
+import path from "path";
 
 
 const app = express();
@@ -14,11 +15,17 @@ const app = express();
 
 
 
+
 app.use(cors());
 app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/ads", advertisementsRoutes);
 app.use("/categories", categoryRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
+
 
 // 🔹 Kategóriák seedelése
 // 🔹 Az AppDataSource-t itt inicializáljuk, ÉS csak egyszer!

@@ -6,28 +6,28 @@ import multer from 'multer';
 import { tokencheck } from "../utils/tokenUtils";
 import cron from "node-cron";
 import { Category } from "../entity/Category";
+import path from "path";
 
 const app = express();
+
 
 
 // ----------------------------Multer(Képfeltöltés)----------------------------
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+    cb(null, 'uploads/');  // Make sure 'uploads/' directory exists
   },
   filename: function (req, file, cb) {
-      const timestamp = Date.now();
-      const originalname = file.originalname.replace(' ', '_');
-      const name = originalname.substring(0, originalname.lastIndexOf('.'));
-      const ext = originalname.substring(originalname.lastIndexOf('.'));
-      cb(null, name + '-' + timestamp + ext);
+    const timestamp = Date.now();
+    const originalname = file.originalname.replace(' ', '_');
+    const name = originalname.substring(0, originalname.lastIndexOf('.'));
+    const ext = originalname.substring(originalname.lastIndexOf('.'));
+    cb(null, name + '-' + timestamp + ext);
   }
 });
 
-const upload = multer({ storage: storage })
-
-
+const upload = multer({ storage: storage });
 
 const router = Router();
 app.use(express.json()); // Biztosítja a JSON-ként érkező kérés feldolgozását
@@ -61,18 +61,15 @@ export const deleteExpiredAds = async () => {
 
 // ----------------------------Hirdetés műveletek----------------------------
 // Hirdetés létrehozása
-router.post("/", async (req: any, res: any) => {
-  console.log(req.body);  
-
-  const { categoryID, title, description, price, image } = req.body;
-
+router.post("/", upload.single('image'), async (req: any, res: any) => {
   const invalidFields: string[] = [];
+  console.log(req.body);
 
-  if (!categoryID) invalidFields.push("categoryID");
-  if (!title) invalidFields.push("title");
-  if (!description) invalidFields.push("description");
-  if (!price) invalidFields.push("price");
+  const { categoryID, title, description, price } = req.body;
 
+  // Ellenőrizzük az összes mezőt
+  console.log("Küldött adatok:", { categoryID, title, description, price });
+  
   // Ha vannak hibás mezők
   if (invalidFields.length > 0) {
     return res.status(400).json({
@@ -81,6 +78,7 @@ router.post("/", async (req: any, res: any) => {
     });
   }
 
+  // Ellenőrizd, hogy a felhasználó létezik-e
   const user = await AppDataSource.getRepository(User).findOne({
     where: { id: req.user?.userId },
   });
@@ -88,19 +86,37 @@ router.post("/", async (req: any, res: any) => {
     return res.status(404).json({ message: "Felhasználó nem található!" });
   }
 
+  // Ellenőrizd, hogy a kategória létezik-e
+  const category = await AppDataSource.getRepository(Category).findOne({
+    where: { id: categoryID },
+  });
+  if (!category) {
+    return res.status(404).json({ message: "Kategória nem található!" });
+  }
+
   const newAd = new Advertisements();
   newAd.user = user;
   newAd.date = new Date();
-  newAd.category = categoryID;
+  newAd.category = category;
   newAd.title = title;
   newAd.description = description;
   newAd.price = price;
-  newAd.imagefilename = image;
 
-  await AppDataSource.getRepository(Advertisements).save(newAd);
+  if (req.file) {
+    newAd.imagefilename = req.file.filename; // Használjuk a fájl nevét a multer-től
+  } else {
+    newAd.imagefilename = null; // Vagy állítsd be egy alapértelmezett értékre
+  }
 
-  res.status(201).json({ message: "Hirdetés sikeresen létrehozva!", advertisement: newAd });
+  try {
+    await AppDataSource.getRepository(Advertisements).save(newAd);
+    res.status(201).json({ message: "Hirdetés sikeresen létrehozva!", advertisement: newAd });
+  } catch (error) {
+    console.error("Hiba a hirdetés mentése során:", error);
+    res.status(500).json({ message: "Hiba történt a hirdetés mentésekor.", error });
+  }
 });
+
 
 // Hirdetés módosítása (Csak a saját hirdetést módosíthatja)
 router.patch("/:id", tokencheck, async (req: any, res: any) => {
@@ -302,12 +318,7 @@ router.get("/category/:categoryName", async (req: any, res: any) => {
 });
 
 // Képfeltöltés (bejelentkezett felhasználóknak)
-router.post('/uploads', upload.single('file'), (req: any, res: any) => {
-  if (!req.file) {
-    return res.status(500).json({ message: 'Hiba történt a feltöltéskor!' });
-  }
-  res.status(200).json({ message: 'Sikeres képfeltöltés!', file: req.file });
-});
+
 
 // Hirdetés autodelete 1 hét után
 cron.schedule("* * * * *", async () => { // Naponta éjfélkor fut

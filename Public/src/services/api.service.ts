@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';  // Importáljuk a map operátort
-import { Advertisement } from '../interfaces/Advertisment';
+import { map } from 'rxjs/operators';  
+import { Advertisement } from '../interfaces/Advertisement';
 
 @Injectable({
   providedIn: 'root'
@@ -40,12 +40,12 @@ export class ApiService {
   }
 
   getAds(): Observable<any[]> {
-    return this.http.get<{ advertisements: any[] }>(`${this.server}/ads`, this.tokenHeader())  // Megadjuk a választípust
+    return this.http.get<{ advertisements: any[] }>(`${this.server}/ads`, this.tokenHeader())
       .pipe(
         map(response => {
           return response.advertisements.map(ad => ({
             ...ad,
-            user: ad.user || {}  // Felhasználói adatokat alapértelmezetten üres objektumként kezeljük
+            user: ad.user || {}  
           }));
         })
       );
@@ -56,7 +56,19 @@ export class ApiService {
   }
 
   getAdsByCategory(category: string): Observable<any[]> {
-    return this.http.get<any>(`${this.server}/ads/category/${category}`)
+    return this.http.get<any>(`${this.server}/ads/category/${category}`);
   }
+
+  // Hirdetés mentésére szolgáló metódus
+  saveAd(adData: any): Observable<any> {
+    const formData = new FormData();
+    formData.append('title', adData.title);
+    formData.append('price', adData.price);
+    formData.append('categoryID', adData.categoryID);
+    formData.append('description', adData.description);
+
   
-} 
+    console.log(formData);
+    return this.http.post(`${this.server}/ads`, formData, this.tokenHeader());
+  }
+}

@@ -17,7 +17,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-ads',
   templateUrl: './ads.component.html',
   styleUrls: ['./ads.component.scss'],
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, CommonModule, MatCardModule, MatExpansionModule, MatIconModule, FormsModule, MatChipsModule],  
+  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, CommonModule, MatCardModule, MatExpansionModule, MatIconModule, FormsModule, MatChipsModule, MatCardModule],  
 })
 export class AdsComponent implements OnInit {
   advertisements: any[] = []; // Hirdetések
@@ -33,6 +33,7 @@ export class AdsComponent implements OnInit {
 
   constructor(private api: ApiService, private router: Router) {}
 
+  
   ngOnInit(): void {
    
     this.api.getAds().subscribe({
@@ -68,26 +69,43 @@ export class AdsComponent implements OnInit {
   }
 
   saveAd() {
-    if (
-      this.newAd.title &&
-      this.newAd.price &&
-      this.newAd.description &&
-      this.newAd.category
-    ) {
-      console.log('Új hirdetés mentése:', this.newAd);
-      this.addAdFormVisible = false;
-      // Hozzáadhatod a mentési logikát, pl. HTTP POST kérés küldése az API-hoz
-    } else {
-      console.log('Kérlek, töltsd ki az összes mezőt!');
-    }
+    const adData = {
+      title: this.newAd.title,
+      price: this.newAd.price,
+      categoryID: this.getSelectedCategoryId(), // Kiválasztott kategória ID
+      description: this.newAd.description,
+      image: this.newAd.image // Kép fájl (ha van)
+    };
+  
+    console.log('AdData:', adData); // Ellenőrizd az értékeket
+  
+    this.api.saveAd(adData).subscribe({
+      next: (response) => {
+        console.log('Hirdetés sikeresen mentve:', response);
+        this.advertisements.push(response.advertisement);
+        this.addAdFormVisible = false;  
+      },
+      error: (err) => {
+        console.error('Hiba történt a hirdetés mentésekor:', err);
+        if (err.error && err.error.invalidFields) {
+          console.log('Érvénytelen mezők:', err.error.invalidFields);
+        }
+      },
+    });
   }
+  
+  getSelectedCategoryId() {
+    const selectedCategory = this.categories.find(category => category.name === this.newAd.category);
+    return selectedCategory ? selectedCategory.id : null; // Visszatér az ID-val, vagy nullal
+  }
+  
+
 
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.newAd.image = file;
-    }
+    const file: File = event.target.files[0]; // Az első fájl kiválasztása
+    this.newAd.image = file; // A kiválasztott fájl tárolása
   }
+
 
   cancelAddAd() {
     this.addAdFormVisible = false;
