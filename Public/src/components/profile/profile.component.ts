@@ -12,7 +12,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../services/auth.service'; // Bejelentkezett user ellenőrzése
-import { Advertisement } from '../../interfaces/Advertisment';
+import { Advertisement } from '../../interfaces/Advertisement';
 
 @Component({
   selector: 'app-profile',

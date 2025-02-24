@@ -67,10 +67,17 @@ export class ApiService {
     formData.append('categoryID', adData.categoryID);
     formData.append('description', adData.description);
 
-  
-    console.log(formData);
+    if (adData.image) {
+        formData.append('image', adData.image, adData.image.name); // Az image fájl nevét is átadod
+    } else {
+        console.error('Nincs fájl kiválasztva');
+    }
+
+    console.log('Küldött FormData:', formData);
     return this.http.post(`${this.server}/ads`, formData, this.tokenHeader());
-  }
+}
+
+
   deleteAd(adId: string): Observable<any> {
     return this.http.delete(`${this.server}/ads/${adId}`, this.tokenHeader());
   }

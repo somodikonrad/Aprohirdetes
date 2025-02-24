@@ -65,10 +65,10 @@ router.post("/", upload.single('image'), async (req: any, res: any) => {
   const invalidFields: string[] = [];
   console.log(req.body);
 
-  const { categoryID, title, description, price } = req.body;
+  const { categoryID, title, description, price, image } = req.body;
 
   // Ellenőrizzük az összes mezőt
-  console.log("Küldött adatok:", { categoryID, title, description, price });
+  console.log("Küldött adatok:", { categoryID, title, description, price, image });
   
   // Ha vannak hibás mezők
   if (invalidFields.length > 0) {
@@ -101,12 +101,7 @@ router.post("/", upload.single('image'), async (req: any, res: any) => {
   newAd.title = title;
   newAd.description = description;
   newAd.price = price;
-
-  if (req.file) {
-    newAd.imagefilename = req.file.filename; // Használjuk a fájl nevét a multer-től
-  } else {
-    newAd.imagefilename = null; // Vagy állítsd be egy alapértelmezett értékre
-  }
+  newAd.imagefilename = req.file.filename;
 
   try {
     await AppDataSource.getRepository(Advertisements).save(newAd);

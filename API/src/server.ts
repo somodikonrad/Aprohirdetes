@@ -21,7 +21,7 @@ app.use(express.json());
 app.use("/users", userRoutes);
 app.use("/ads", advertisementsRoutes);
 app.use("/categories", categoryRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
 
 
 
