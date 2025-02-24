@@ -19,10 +19,16 @@ import { MatChipsModule } from '@angular/material/chips';
   imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, CommonModule, MatCardModule, MatExpansionModule, MatIconModule, FormsModule, MatChipsModule],  
 })
 export class AdsComponent implements OnInit {
-  advertisements: any[] = []; 
-  filteredAdvertisements: any[] = [];  // Szűrt hirdetések
-  categories: any[] = [];
-  selectedCategory: string = '';  // Kiválasztott kategória
+  advertisements: any[] = []; // Hirdetések
+  categories: any[] = []; // Kategóriák listája
+  addAdFormVisible = false; // A form láthatósága
+  newAd = {
+    title: '',
+    price: null,
+    category: '',  // Kategória választás
+    description: '',
+    image: null as File | null,
+  };
 
   constructor(private api: ApiService, private router: Router) {}
 
@@ -68,5 +74,35 @@ export class AdsComponent implements OnInit {
 
   navigate(adId: number) {
     this.router.navigate(['/singleAd', adId]);
+  }
+
+  toggleAddAdForm() {
+    this.addAdFormVisible = !this.addAdFormVisible;
+  }
+
+  saveAd() {
+    if (
+      this.newAd.title &&
+      this.newAd.price &&
+      this.newAd.description &&
+      this.newAd.category
+    ) {
+      console.log('Új hirdetés mentése:', this.newAd);
+      this.addAdFormVisible = false;
+      // Hozzáadhatod a mentési logikát, pl. HTTP POST kérés küldése az API-hoz
+    } else {
+      console.log('Kérlek, töltsd ki az összes mezőt!');
+    }
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.newAd.image = file;
+    }
+  }
+
+  cancelAddAd() {
+    this.addAdFormVisible = false;
   }
 }

@@ -150,6 +150,49 @@ mat-chip {
     color: #ffffff;
 
   }
+  
+  .add-button {
+    position: fixed;
+    background-color: #3f3f3f;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;  
+    width: 10%;
+  }
+  
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Áttetsző háttér */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .input-field {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+  }
+  
+  .popup-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  button.mat-button {
+    padding: 6px 16px;
+  }
 }
-
-
