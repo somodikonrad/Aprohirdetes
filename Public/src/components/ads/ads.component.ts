@@ -19,8 +19,11 @@ import { MatChipsModule } from '@angular/material/chips';
   imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, CommonModule, MatCardModule, MatExpansionModule, MatIconModule, FormsModule, MatChipsModule],  
 })
 export class AdsComponent implements OnInit {
-  advertisements: any[] = []; // Hirdetések
-  categories: any[] = []; // Kategóriák listája
+  advertisements: any[] = []; 
+  filteredAdvertisements: any[] = [];  // Szűrt hirdetések
+  categories: any[] = [];
+  selectedCategory: string = '';  // Kiválasztott kategória
+
   addAdFormVisible = false; // A form láthatósága
   newAd = {
     title: '',
